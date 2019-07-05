@@ -48,12 +48,15 @@ class MapWorld {
     }
 
     drawMapWorld() {
-        console.log('this1')
+        var x,
+            y,
+            wall;
+
         this.mapContext.fillStyle = "#fff";
-        this.mapContext.fillRect(0,0,this.mapCanvas.width,this.mapCanvas.height)
-        for (var y=0; y < this.mapHeight; y++) {
-            for (var x=0; x < this.mapWidth; x++) {
-                var wall = this.map[y][x];
+        this.mapContext.fillRect(0,0,this.mapCanvas.width,this.mapCanvas.height);
+        for (y=0; y < this.mapHeight; y++) {
+            for (x=0; x < this.mapWidth; x++) {
+                wall = this.map[y][x];
                 if (wall > 0) {
                     this.mapContext.fillStyle = 'rgb(0,0,0)'; //draw a block on the map
                     this.mapContext.fillRect(
