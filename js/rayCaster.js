@@ -9,6 +9,14 @@ class Raycast {
         this.speed = speed; 
         this.moveSpeed = moveSpeed;
         this.rotationSpeed = rotSpeed;
+        this.map = map;
+
+        this.rayCanvas.width = this.map.mapCanvas.width;
+        this.rayCanvas.height = this.map.mapCanvas.height;
+
+        this.rayCanvas.style.width = this.rayCanvas.width + 'px';
+        this.rayCanvas.style.height = this.rayCanvas.height + 'px';
+
     }
 
     draw() {
@@ -17,7 +25,7 @@ class Raycast {
         let w = 4;
         let h = 4;
 
-        // this.rayContext.clearRect(0, 0, this.rayContext.width, this.rayContext.height);
+        this.rayContext.clearRect(0, 0, 256, 192);
         this.rayContext.fillStyle = 'red';
         this.rayContext.fillRect(x, y, w, h);
         this.rayContext.beginPath();
@@ -37,35 +45,39 @@ class Raycast {
     }
         this.newX = this.pos.x + Math.cos(this.alpha) * this.moveStep;
         this.newY = this.pos.y + Math.sin(this.alpha) * this.moveStep;
-        // if (this.isBlocking(this.newX, this.newY)) {
-        //     return;
-        // }
+        if (this.isBlocking(this.newX, this.newY)) {
+            return;
+        }
         this.pos.x = this.newX;
         this.pos.y = this.newY;
     }
-    // isBlocking(x,y) {
-    //     if (y < 0 || y > this.map.mapHeight || x < 0 || x > this.map.mapWidth) {
-    //         return true;
-    //     }
-    // }
-    rotateLeft() {
-        console.log('left');
-        this.dir = 1;
-        this.move();
+
+    isBlocking(x,y) {
+        if (y < 1 || y > this.map.mapHeight - 1 || x < 1 || x > this.map.mapWidth - 1) {
+            return true;
+        }
+
+        return (mapClone[Math.floor(y)][Math.floor(x)] != 0);
     }
 
-    rotateRight() {
+    rotateLeft() {
+        console.log('left');
         this.dir = -1;
         this.move();
     }
 
+    rotateRight() {
+        this.dir = 1;
+        this.move();
+    }
+
     moveForward() {
-        this.speed = -1;
+        this.speed = 1;
         this.move();
     }
 
     moveBackward() {
-        this.speed = 1;
+        this.speed = -1;
         this.move();
     }
 

@@ -20,12 +20,11 @@ class GameWorld {
 
     init() {
         this.mapWorld = new MapWorld(); 
+        this.mapWorld.init();
         this.mapWorld.drawMapWorld();
         this.ray = new Raycast(PLAYER_START_POSX, PLAYER_START_POSY, START_ANGLE, SPEED, MOVE_SPEED, ROTATE_SPEED_R, this.mapWorld);
-
         window.addEventListener("keydown", () => this.handleKeyDown(event));
         window.addEventListener("keyup", () => this.handleKeyUp(event));
-        // this.startGameLoop();
     }
 
     startGameLoop() {
@@ -33,7 +32,7 @@ class GameWorld {
         console.log(this.ray);
         this.ray.draw();
         this.ray.move();
-        window.requestAnimationFrame(this.startGameLoop);
+        window.requestAnimationFrame(this.startGameLoop.bind(this));
     }
 
     handleKeyDown(event) {
