@@ -1,125 +1,81 @@
 class Raycast {
-    constructor(x,y, alpha, alpha_offset, moveSpeed) {
-        this.rayContext = ctx;
-        this.pos = new Vector(x,y);
-        this.dir = 1;
-        this.alpha = alpha; 
-        this.speed = SPEED;
+    constructor(x, y, alpha, speed, moveSpeed, rotSpeed, map) {
+        this.rayCanvas = document.getElementById('objectcanvas')
+        this.rayContext = this.rayCanvas.getContext('2d');
+        this.pos = new Vector(x, y);
+        console.log(this.rayCanvas);
+        this.dir = 0;
+        this.alpha = alpha; //rotation angle 
+        this.speed = speed; 
         this.moveSpeed = moveSpeed;
-        this.rotateSpeed = alpha_offset;
-        console.log(this);
-
-        this.left = false;
-        this.up = false;
-        this.right = false;
-        this.down = false;
-
-        window.addEventListener("keydown", () => this.handleKeyDown(event));
-        window.addEventListener("keyup", () => this.handleKeyUp(event));
+        this.rotationSpeed = rotSpeed;
     }
 
     draw() {
-            this.rayContext.fillStyle = 'red';
-            this.rayContext.fillRect(
-                this.pos.x * MAP_SCALE-2,
-                this.pos.y * MAP_SCALE-2,
-                6,6
-            );
-            this.rayContext.beginPath();
-            this.rayContext.moveTo(this.pos.x * MAP_SCALE, this.pos.y * MAP_SCALE);
-            this.rayContext.lineTo(
-                (this.pos.x + Math.cos(this.alpha) * 6) * MAP_SCALE,
-                (this.pos.y + Math.sin(this.alpha)*6) * MAP_SCALE
-            );
-            this.rayContext.closePath();
-            this.rayContext.stroke();
+        let x = this.pos.x * MAP_SCALE - 2;
+        let y = this.pos.y * MAP_SCALE - 2;
+        let w = 4;
+        let h = 4;
+
+        // this.rayContext.clearRect(0, 0, this.rayContext.width, this.rayContext.height);
+        this.rayContext.fillStyle = 'red';
+        this.rayContext.fillRect(x, y, w, h);
+        this.rayContext.beginPath();
+        this.rayContext.moveTo(x + 2, y + 2);
+        this.rayContext.lineTo(
+            (this.pos.x + Math.cos(this.alpha) * w) * MAP_SCALE,
+            (this.pos.y + Math.sin(this.alpha)* h) * MAP_SCALE
+        );
+        this.rayContext.closePath();
+        this.rayContext.stroke();
     }
 
-    update() {
+    move() {
         this.moveStep = this.speed * this.moveSpeed;
-        this.alpha += this.dir * this.rotateSpeed;
+        if (this.dir != 0) {
+        this.alpha += this.dir * this.rotationSpeed;
+    }
         this.newX = this.pos.x + Math.cos(this.alpha) * this.moveStep;
         this.newY = this.pos.y + Math.sin(this.alpha) * this.moveStep;
-        this.newPos = new Vector(this.newX, this.newY);
-        this.checkCollision(this.newPos);
-        
+        // if (this.isBlocking(this.newX, this.newY)) {
+        //     return;
+        // }
+        this.pos.x = this.newX;
+        this.pos.y = this.newY;
+    }
+    // isBlocking(x,y) {
+    //     if (y < 0 || y > this.map.mapHeight || x < 0 || x > this.map.mapWidth) {
+    //         return true;
+    //     }
+    // }
+    rotateLeft() {
+        console.log('left');
+        this.dir = 1;
+        this.move();
     }
 
-    checkCollision(cPos) {
-
+    rotateRight() {
+        this.dir = -1;
+        this.move();
     }
 
-    movement = {
-        
-        forward: function() {
-            console.log(this);
-            this.speed = 1;
-            update(); //redundant
-        },
-
-        backward: function() {
-            this.speed = -1;
-            this.update();
-        },
-
-        rotateLeft: function() {
-            this.dir = -1;
-            this.update();
-        },
-        
-        rotateRight: function() {
-            this.dir = 1;
-            this.update();
-        },
-
-        stopMovement: function() {
-            this.speed = 0;
-            this.update();
-        },
-
-        stopRotate: function() {
-            this.dir = 0;
-            this.update();
-        }
+    moveForward() {
+        this.speed = -1;
+        this.move();
     }
 
-    handleKeyDown(event) {
-        switch (event.keyCode) {
-            case LEFT_ARROW:
-                this.left = true;
-                this.movement.rotateLeft(event);
-                break;
-            case UP_ARROW:
-                this.up = true;
-                this.movement.forward(event);
-                break;
-            case RIGHT_ARROW:
-                this.right = true;
-                this.movement.rotateRight(event);
-                break;
-            case DOWN_ARROW:
-                this.down = true;
-                this.movement.backward(event);
-        }
-    }
-    
-    handleKeyUp(event) {
-        switch (event.keyCode) {
-            case LEFT_ARROW:
-            case RIGHT_ARROW:    
-                this.left = false;
-                this.right = false;
-                this.movement.stopRotate();
-                break;
-            case UP_ARROW:
-            case DOWN_ARROW:                
-                this.up = false;
-                this.down = false;
-                this.movement.stopMovement();
-                break;          
-        }
-        this.keyDownDuration = 0;
-        }
+    moveBackward() {
+        this.speed = 1;
+        this.move();
     }
 
+    stopRotate() {
+        this.dir=0;
+        this.move();
+    }
 
+    stopMovement() {
+        this.speed = 0;
+        this.move();
+    }
+}

@@ -1,40 +1,77 @@
 class GameWorld {
-    constructor() {
-        this.gameContext = ctx;
-        this.gameStates = [
-            {   
-                Load_state : true,
-                Menu_state : false,
-                Game_start : {
-                    isplaying: false,
-                    isPaused: false,
-                    gameOver: false,
-                    quitGame: false
-                } 
+    constructor(gameWrapper) {
+        this.gameContainer = gameWrapper;
+        this.gameStates = [{
+            Load_state: true,
+            Menu_state: false,
+            Game_start: {
+                isplaying: false,
+                isPaused: false,
+                gameOver: false,
+                quitGame: false
             }
-        ]
-        // console.log(this);
-    }
+        }]
+
+        this.left = false;
+        this.up = false;
+        this.right = false;
+        this.down = false;
+            }
 
     init() {
-        if(gameWrapper.getContext('2d')) {
-            this.map = new Map(); //let
-            this.map.drawMap();
-            console.log('this');
-            this.ray = new Raycast(PLAYER_START_POSX, PLAYER_START_POSY, START_ANGLE_R, ROTATE_SPEED_R, MOVE_SPEED);
-            console.log(this.ray);
-            this.gameLoop();
-        }
+        this.mapWorld = new MapWorld(); 
+        this.mapWorld.drawMapWorld();
+        this.ray = new Raycast(PLAYER_START_POSX, PLAYER_START_POSY, START_ANGLE, SPEED, MOVE_SPEED, ROTATE_SPEED_R, this.mapWorld);
 
-        else {
-            console.log('not support');
-        }
+        window.addEventListener("keydown", () => this.handleKeyDown(event));
+        window.addEventListener("keyup", () => this.handleKeyUp(event));
+        // this.startGameLoop();
     }
 
-    gameLoop() {
+    startGameLoop() {
         console.log('gameloop');
+        console.log(this.ray);
         this.ray.draw();
-        this.ray.update();
-        // window.requestAnimationFrame(this.gameLoop);
+        this.ray.move();
+        window.requestAnimationFrame(this.startGameLoop);
     }
+
+    handleKeyDown(event) {
+        console.log(this);
+        switch (event.keyCode) {
+            case LEFT_ARROW:
+                this.left = true;
+                this.ray.rotateLeft(event);
+                break;
+            case UP_ARROW:
+                this.up = true;
+                this.ray.moveForward(event);
+                break;
+            case RIGHT_ARROW:
+                this.right = true;
+                this.ray.rotateRight(event);
+                break;
+            case DOWN_ARROW:
+                this.down = true;
+                this.ray.moveBackward(event); 
+                }
+    }
+
+    handleKeyUp(event) {
+        switch (event.keyCode) {
+            case LEFT_ARROW:
+            case RIGHT_ARROW:
+                this.ray.left = false;
+                this.ray.right = false;
+                this.ray.stopRotate();
+                break;
+            case UP_ARROW:
+            case DOWN_ARROW:
+                this.up = false;
+                this.down = false;
+                this.ray.stopMovement();
+                break;
+        }
+    }
+
 }
