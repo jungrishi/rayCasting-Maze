@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Ray Cast</title>
+</head>
+<body>
+    <canvas id="mycanvas" width="600" height="500"></canvas>
+    <script src="./js/utils/util.js"></script>
+    <script src="./js/utils/globalConst.js"></script>
+    <script src="./js/vector.js"></script>
+    <script src="./js/map.js"></script>
+    <script src="./js/rayCaster.js"></script>
+    <script src="./js/gameWorld.js"></script>
+    <script>
+        var gameWrapper = document.getElementById('mycanvas');
+        var ctx = gameWrapper.getContext('2d');
+        window.addEventListener("load", function() {
+            console.log('html');
+            game = new GameWorld();
+            game.init();
+            
+        })
+    </script>
+</body>
+</html>
