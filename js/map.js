@@ -40,7 +40,6 @@ class MapWorld {
         mapClone = [...this.map];
         this.mapCanvas.width = this.mapWidth * MAP_SCALE;
         this.mapCanvas.height = this.mapHeight * MAP_SCALE; //block size 8px
-        console.log('map',this.mapCanvas.height); //256 * 192
         this.mapCanvas.style.width = (this.mapWidth * MAP_SCALE) + 'px';
         this.mapCanvas.style.height = (this.mapHeight * MAP_SCALE) + 'px';
         gameWrapper.style.width = this.mapCanvas.width + 'px';
@@ -58,7 +57,7 @@ class MapWorld {
             for (x=0; x < this.mapWidth; x++) {
                 wall = this.map[y][x];
                 if (wall > 0) {
-                    this.mapContext.fillStyle = 'rgb(0,0,0)'; //draw a block on the map
+                    this.mapContext.fillStyle = '#d5d5d5'; //draw a block on the map
                     this.mapContext.fillRect(
                         x * MAP_SCALE,
                         y * MAP_SCALE,
