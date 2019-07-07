@@ -1,4 +1,4 @@
-class Raycast {
+class Player {
     constructor(x, y, alpha, speed, moveSpeed, rotSpeed, map) {
         this.rayCanvas = document.getElementById('objectcanvas')
         this.rayContext = this.rayCanvas.getContext('2d');
@@ -20,6 +20,7 @@ class Raycast {
     }
 
     draw() {
+        
         let x = this.pos.x * MAP_SCALE - 2;
         let y = this.pos.y * MAP_SCALE - 2;
         let w = 4;
@@ -40,9 +41,16 @@ class Raycast {
 
     move() {
         this.moveStep = this.speed * this.moveSpeed;
-        if (this.dir != 0) {
+        if (this.dir != 0) {  
         this.alpha += this.dir * this.rotationSpeed;
     }
+
+    while(this.alpha < 0) {
+        this.alpha += DOUBLEPI;
+    }
+
+    while(this.alpha >= DOUBLEPI) this.alpha -= DOUBLEPI;
+
         this.newX = this.pos.x + Math.cos(this.alpha) * this.moveStep;
         this.newY = this.pos.y + Math.sin(this.alpha) * this.moveStep;
         if (this.isBlocking(this.newX, this.newY)) {

@@ -22,16 +22,20 @@ class GameWorld {
         this.mapWorld = new MapWorld(); 
         this.mapWorld.init();
         this.mapWorld.drawMapWorld();
-        this.ray = new Raycast(PLAYER_START_POSX, PLAYER_START_POSY, START_ANGLE, SPEED, MOVE_SPEED, ROTATE_SPEED_R, this.mapWorld);
+        this.player = new Player(PLAYER_START_POSX, PLAYER_START_POSY, START_ANGLE, SPEED, MOVE_SPEED, ROTATE_SPEED_R, this.mapWorld);
+        this.particle = new Light(PROJECTION_PLANE_WIDTH, RAY_WIDTH, VIEW_DIST, FOV, NUM_RAYS, this.player);        
+        // this.particle.castRay();
         window.addEventListener("keydown", () => this.handleKeyDown(event));
         window.addEventListener("keyup", () => this.handleKeyUp(event));
     }
 
     startGameLoop() {
         console.log('gameloop');
-        console.log(this.ray);
-        this.ray.draw();
-        this.ray.move();
+        this.player.draw();
+        this.player.move();
+        this.particle.castRay();
+        
+        // this.particle.castSingleRay();
         window.requestAnimationFrame(this.startGameLoop.bind(this));
     }
 
@@ -40,19 +44,19 @@ class GameWorld {
         switch (event.keyCode) {
             case LEFT_ARROW:
                 this.left = true;
-                this.ray.rotateLeft(event);
+                this.player.rotateLeft(event);
                 break;
             case UP_ARROW:
                 this.up = true;
-                this.ray.moveForward(event);
+                this.player.moveForward(event);
                 break;
             case RIGHT_ARROW:
                 this.right = true;
-                this.ray.rotateRight(event);
+                this.player.rotateRight(event);
                 break;
             case DOWN_ARROW:
                 this.down = true;
-                this.ray.moveBackward(event); 
+                this.player.moveBackward(event); 
                 }
     }
 
@@ -60,15 +64,15 @@ class GameWorld {
         switch (event.keyCode) {
             case LEFT_ARROW:
             case RIGHT_ARROW:
-                this.ray.left = false;
-                this.ray.right = false;
-                this.ray.stopRotate();
+                this.left = false;
+                this.right = false;
+                this.player.stopRotate();
                 break;
             case UP_ARROW:
             case DOWN_ARROW:
                 this.up = false;
                 this.down = false;
-                this.ray.stopMovement();
+                this.player.stopMovement();
                 break;
         }
     }
