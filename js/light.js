@@ -6,6 +6,8 @@ class Light {
         this.perpdistance = dist;
         this.numRays = numRays;
         this.mapClone = mapClone;
+        this.dist = 0;
+        this.wall = new Vector();
     }
 
     castRay() {
@@ -30,8 +32,9 @@ class Light {
             anglePara += DOUBLEPI;
         }
         var right = (anglePara > DOUBLEPI * 0.75 || anglePara < DOUBLEPI * 0.25);
-        var up = (anglePara < 0 || anglePara < Math.PI);
-
+        var down = (anglePara > 0 && anglePara < Math.PI);
+        var up = !down;
+        
         sinThetaValue = Math.sin(anglePara);
         cosThetaValue = Math.cos(anglePara);
 
