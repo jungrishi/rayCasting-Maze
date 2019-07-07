@@ -5,7 +5,7 @@ const DOWN_ARROW = 40;
 
 const ROTATE_SPEED = 4;
 const ROTATE_SPEED_R = degToRadian(ROTATE_SPEED);
-const MOVE_SPEED = 0.15;
+const MOVE_SPEED = 0.14;
 const SPEED = 0;
 const MAP_SCALE = 8;
 

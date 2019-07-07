@@ -10,7 +10,8 @@ class Light {
 
     castRay() {
         var stripID = 0;
-        var rayViewDist = 0;
+        var rayViewDist;
+
         for(var i=0;i<this.numRays;i++) {
             var rayPosition = (-this.numRays/2 + i) * this.pixelWidth;
             rayViewDist = Math.sqrt(rayPosition  * rayPosition + this.perpdistance * this.perpdistance);
@@ -92,7 +93,7 @@ class Light {
             this.renderStrip(stripID,fishEyeRemoveD);
             
             
-        this.drawRay(hit);
+        this.drawRay(hit, anglePara);
         }
     }
 
@@ -102,7 +103,7 @@ class Light {
         var leftoffset = stripID * this.pixelWidth;
         var opacity = (0.5/dist) * 6;
 
-        this.player.rayContext.fillStyle = "rgba(255,255,255," + opacity + ")";
+        this.player.rayContext.fillStyle = "rgba(255,0,0," + opacity + ")";
         this.player.rayContext.fillRect(
             leftoffset,
             topOffset,
@@ -112,17 +113,17 @@ class Light {
 
     };
 
-    drawRay(ray) {
+    drawRay(ray, angle) {
         console.log("hey ray caster")
-        this.player.strokeStyle = 'rgba(255,255,255,0.5)';
+        this.player.strokeStyle = 'rgba(255,240,0,0.5)';
         this.player.rayContext.beginPath();
         this.player.rayContext.moveTo(
-            this.player.pos.x * MAP_SCALE,
+            this.player.pos.x * MAP_SCALE ,
             this.player.pos.y * MAP_SCALE
         );
         this.player.rayContext.lineTo(
-            ray.x * MAP_SCALE,
-            ray.y * MAP_SCALE 
+            ray.x * MAP_SCALE, //* Math.cos(angle),
+            ray.y * MAP_SCALE //* Math.sin(angle)
         );
         this.player.rayContext.closePath();
         this.player.rayContext.stroke();

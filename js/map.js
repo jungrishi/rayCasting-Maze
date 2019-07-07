@@ -57,7 +57,7 @@ class MapWorld {
             for (x=0; x < this.mapWidth; x++) {
                 wall = this.map[y][x];
                 if (wall > 0) {
-                    this.mapContext.fillStyle = '#d5d5d5'; //draw a block on the map
+                    this.mapContext.fillStyle = 'black'; //draw a block on the map
                     this.mapContext.fillRect(
                         x * MAP_SCALE,
                         y * MAP_SCALE,

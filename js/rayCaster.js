@@ -30,6 +30,7 @@ class Player {
         this.rayContext.fillStyle = 'red';
         this.rayContext.fillRect(x, y, w, h);
         this.rayContext.beginPath();
+        this.rayContext.strokeStyle = 'rgba(255,0,0,0.3)';
         this.rayContext.moveTo(x + 2, y + 2);
         this.rayContext.lineTo(
             (this.pos.x + Math.cos(this.alpha) * w) * MAP_SCALE,
@@ -45,20 +46,20 @@ class Player {
         this.alpha += this.dir * this.rotationSpeed;
     }
 
-    while(this.alpha < 0) {
-        this.alpha += DOUBLEPI;
-    }
-
-    while(this.alpha >= DOUBLEPI) this.alpha -= DOUBLEPI;
-
-        this.newX = this.pos.x + Math.cos(this.alpha) * this.moveStep;
-        this.newY = this.pos.y + Math.sin(this.alpha) * this.moveStep;
-        if (this.isBlocking(this.newX, this.newY)) {
-            return;
+        while(this.alpha < 0) {
+            this.alpha += DOUBLEPI;
         }
-        this.pos.x = this.newX;
-        this.pos.y = this.newY;
-    }
+
+        while(this.alpha >= DOUBLEPI) this.alpha -= DOUBLEPI;
+
+            this.newX = this.pos.x + Math.cos(this.alpha) * this.moveStep;
+            this.newY = this.pos.y + Math.sin(this.alpha) * this.moveStep;
+            if (this.isBlocking(this.newX, this.newY)) {
+                return;
+            }
+            this.pos.x = this.newX;
+            this.pos.y = this.newY;
+        }
 
     isBlocking(x,y) {
         if (y < 1 || y > this.map.mapHeight - 1 || x < 1 || x > this.map.mapWidth - 1) {

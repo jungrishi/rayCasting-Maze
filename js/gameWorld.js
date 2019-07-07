@@ -24,7 +24,7 @@ class GameWorld {
         this.mapWorld.drawMapWorld();
         this.player = new Player(PLAYER_START_POSX, PLAYER_START_POSY, START_ANGLE, SPEED, MOVE_SPEED, ROTATE_SPEED_R, this.mapWorld);
         this.particle = new Light(PROJECTION_PLANE_WIDTH, RAY_WIDTH, VIEW_DIST, NUM_RAYS, this.player);        
-        // this.particle.castRay();
+        this.particle.castRay();
         window.addEventListener("keydown", () => this.handleKeyDown(event));
         window.addEventListener("keyup", () => this.handleKeyUp(event));
     }
@@ -32,13 +32,13 @@ class GameWorld {
     startGameLoop() {
         console.log('gameloop');
         this.player.draw();
-        this.player.move();
+        // this.player.castAllRays();
         this.particle.castRay();
+        this.player.move();
         window.requestAnimationFrame(this.startGameLoop.bind(this));
     }
 
     // renderLoop() {
-       
     //     console.log('g')
     //     window.requestAnimationFrame(this.renderLoop.bind(this));
     // }
