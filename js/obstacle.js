@@ -1,0 +1,9 @@
+class Obstacles {
+    constructor () {
+
+    }
+
+    draw() {
+        
+    }
+}

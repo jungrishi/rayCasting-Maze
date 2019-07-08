@@ -8,6 +8,9 @@ class Light {
         this.mapClone = mapClone;
         this.dist = 0;
         this.wall = new Vector();
+
+        this.canvas3D = document.getElementById('objectcanvas');
+        this.ctx3D = this.canvas3D.getContext('2d');
     }
 
     castRay() {
@@ -35,7 +38,7 @@ class Light {
         
         sinThetaValue = Math.sin(anglePara);
         cosThetaValue = Math.cos(anglePara);
-
+        var intensity;
         var distV = 0;
         var distH = 0;
         var dist;
@@ -80,9 +83,6 @@ class Light {
                     hit.x = x;
                     hit.y = y;
                 }
-                else {
-                    dist = distV;
-                }
                 break;
             }
             x += dx;
@@ -93,40 +93,49 @@ class Light {
             dist = Math.sqrt(dist);
             var angle = this.player.alpha - anglePara;
             var fishEyeRemoveD = dist * Math.cos(angle);
-            // this.renderStrip(stripID,fishEyeRemoveD);
-            
-            
-        this.drawRay(hit, anglePara);
+            this.renderStrip(stripID,fishEyeRemoveD, intensity);
+            this.drawRay(hit, anglePara);
         }
     }
 
-    renderStrip(stripID, dist) {
-        var height  = Math.round((MAP_SCALE * dist)/VIEW_DIST);
-        var topOffset = ((this.projectionPlaneHeight - height)/2);
-        var leftoffset = stripID * this.pixelWidth;
+    renderStrip(stripID, dist, intensity) {
+        var rayDistance = dist;
+        var distanceProjectionPlane = (PROJECTION_PLANE_WIDTH * Math.tan(HALF_FOV)) / 2;
+        var wallStripHeight = (MAP_SCALE / rayDistance) * distanceProjectionPlane;
         var opacity = (0.5/dist) * 6;
 
-        this.player.rayContext.fillStyle = "rgba(255,0,0," + opacity + ")";
-        this.player.rayContext.fillRect(
-            leftoffset,
-            topOffset,
-            this.pixelWidth,
-            height
-        );
+        // this.ctx3D.fillStyle = "hsla(120,100%,50%" + opacity + ")";
+        this.ctx3D.fillRect(
+                            stripID * this.pixelWidth,
+                            (PROJECTION_PLANE_HEIGHT - wallStripHeight)/2,
+                            PROJECTION_PLANE_WIDTH,
+                            wallStripHeight
+                        );
+        
+        // var height  = Math.round((MAP_SCALE * dist)/VIEW_DIST);
+        // var topOffset = ((this.projectionPlaneHeight - height)/2);
+        // var leftoffset = stripID * this.pixelWidth;
+        // this.ctx3D.fillRect(
+        //     leftoffset,
+        //     topOffset,
+        //     this.pixelWidth,
+        //     height
+        // );
 
     };
 
-    drawRay(ray, angle) {
+    drawRay(ray) {
         console.log("hey ray caster")
         this.player.strokeStyle = 'rgba(255,240,0,0.5)';
+        this.player.lineWidth= 0.5;
         this.player.rayContext.beginPath();
         this.player.rayContext.moveTo(
             this.player.pos.x * MAP_SCALE * SCALE_FACTOR ,
             this.player.pos.y * MAP_SCALE * SCALE_FACTOR
         );
         this.player.rayContext.lineTo(
-            ray.x * MAP_SCALE * SCALE_FACTOR, //* Math.cos(angle),
-            ray.y * MAP_SCALE * SCALE_FACTOR//* Math.sin(angle)
+            ray.x * MAP_SCALE * SCALE_FACTOR, // Math.cos(angle),
+            ray.y * MAP_SCALE * SCALE_FACTOR // Math.sin(angle)
         );
         this.player.rayContext.closePath();
         this.player.rayContext.stroke();
