@@ -11,12 +11,11 @@ class GameWorld {
                 quitGame: false
             }
         }]
-
         this.left = false;
         this.up = false;
         this.right = false;
         this.down = false;
-            }
+    }
 
     init() {
         this.mapWorld = new MapWorld(); 
@@ -25,7 +24,6 @@ class GameWorld {
         this.player = new Player(PLAYER_START_POSX, PLAYER_START_POSY, START_ANGLE, SPEED, MOVE_SPEED, ROTATE_SPEED_R, this.mapWorld);
         window.addEventListener("keydown", () => this.handleKeyDown(event));
         window.addEventListener("keyup", () => this.handleKeyUp(event));
-
         this.particle = new Light(PROJECTION_PLANE_WIDTH, RAY_WIDTH, VIEW_DIST, NUM_RAYS, this.player);        
         // this.particle.castRay();        
     }
@@ -48,7 +46,6 @@ class GameWorld {
 
     startGameLoop() {
         this.player.move();
-
         this.player.draw();
         this.particle.castRay();
         // this.castRays();

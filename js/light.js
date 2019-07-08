@@ -29,9 +29,9 @@ class Light {
         var sinThetaValue,cosThetaValue, anglePara;
         anglePara = normalizeAngle(angle);
 
-        var right = (anglePara > DOUBLEPI * 0.75 || anglePara < DOUBLEPI * 0.25);
-        var down = (anglePara > 0 && anglePara < Math.PI);
-        var up = !down;
+        var isFacingRight = (anglePara > DOUBLEPI * 0.75 || anglePara < DOUBLEPI * 0.25);
+        var isFacingdown = (anglePara > 0 && anglePara < Math.PI);
+        var isFacingUp = !isFacingdown;
         
         sinThetaValue = Math.sin(anglePara);
         cosThetaValue = Math.cos(anglePara);
@@ -43,13 +43,13 @@ class Light {
         var hit = new Vector();
         var wall = new Vector();
         var slope = (sinThetaValue/cosThetaValue);
-        var dx = right ? 1: -1;
+        var dx = isFacingRight ? 1: -1;
         var dy = dx * slope;
 
-        var x = right ? Math.ceil(this.player.pos.x) : Math.floor(this.player.pos.x);
+        var x = isFacingRight ? Math.ceil(this.player.pos.x) : Math.floor(this.player.pos.x);
         var y = this.player.pos.y + (x - this.player.pos.x);
         while(x >= 0 && x < mapWidth && y >= 0 && y < mapHeight) {
-            wall.x = Math.floor(Math.floor(x + (right ? 0  : -1)));
+            wall.x = Math.floor(Math.floor(x + (isFacingRight ? 0  : -1)));
             wall.y = Math.floor(y);
             if (this.mapClone[wall.y][wall.x] != 0) {
                 dist = distV = Math.sqrt(Math.pow(x - this.player.pos.x,2) + Math.pow(y-this.player.pos.y,2));
@@ -65,15 +65,15 @@ class Light {
         //horizontal
 
         slope = cosThetaValue/sinThetaValue;
-        dy  = up?-1:1;
+        dy  = isFacingUp?-1:1;
         dx = dy * slope;
 
-        y = up ? Math.floor(this.player.pos.y):Math.ceil(this.player.pos.y);
+        y = isFacingUp ? Math.floor(this.player.pos.y):Math.ceil(this.player.pos.y);
         x = this.player.pos.x + ((y - this.player.pos.y) * slope);
 
         while (x >= 0 && x < mapWidth && y > 0 && y < mapHeight) {
             wall.x = Math.floor(x);
-            wall.y = Math.floor(y + (up ? -1:0));
+            wall.y = Math.floor(y + (isFacingUp ? -1:0));
             if(this.mapClone[wall.y][wall.x] != 0) {
                 distH = Math.sqrt(Math.pow(x - this.player.pos.x,2) + Math.pow(y-this.player.pos.y,2));
                 if (!distV || distH < distV) {
