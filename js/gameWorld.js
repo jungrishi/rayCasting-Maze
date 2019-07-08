@@ -47,11 +47,11 @@ class GameWorld {
     }
 
     startGameLoop() {
-        this.player.draw();
-        // this.castRays();
-        this.particle.castRay();
         this.player.move();
 
+        this.player.draw();
+        this.particle.castRay();
+        // this.castRays();
         requestAnimationFrame(this.startGameLoop.bind(this));
     }
 

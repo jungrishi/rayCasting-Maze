@@ -27,10 +27,8 @@ class Light {
 
     castSingleRay(angle, stripID) {
         var sinThetaValue,cosThetaValue, anglePara;
-        anglePara = angle % DOUBLEPI;
-        if(anglePara < 0) {
-            anglePara += DOUBLEPI;
-        }
+        anglePara = normalizeAngle(angle);
+        
         var right = (anglePara > DOUBLEPI * 0.75 || anglePara < DOUBLEPI * 0.25);
         var down = (anglePara > 0 && anglePara < Math.PI);
         var up = !down;
