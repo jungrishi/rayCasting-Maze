@@ -28,7 +28,7 @@ class Light {
     castSingleRay(angle, stripID) {
         var sinThetaValue,cosThetaValue, anglePara;
         anglePara = normalizeAngle(angle);
-        
+
         var right = (anglePara > DOUBLEPI * 0.75 || anglePara < DOUBLEPI * 0.25);
         var down = (anglePara > 0 && anglePara < Math.PI);
         var up = !down;
@@ -91,7 +91,7 @@ class Light {
             dist = Math.sqrt(dist);
             var angle = this.player.alpha - anglePara;
             var fishEyeRemoveD = dist * Math.cos(angle);
-            this.renderStrip(stripID,fishEyeRemoveD);
+            // this.renderStrip(stripID,fishEyeRemoveD);
             
             
         this.drawRay(hit, anglePara);
@@ -99,7 +99,7 @@ class Light {
     }
 
     renderStrip(stripID, dist) {
-        var height  = Math.round(this.perpdistance/dist);
+        var height  = Math.round((MAP_SCALE * dist)/VIEW_DIST);
         var topOffset = ((this.projectionPlaneHeight - height)/2);
         var leftoffset = stripID * this.pixelWidth;
         var opacity = (0.5/dist) * 6;
