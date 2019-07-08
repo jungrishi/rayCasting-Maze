@@ -40,16 +40,16 @@ class Light {
         var distH = 0;
         var dist;
 
-        var hit = new Vector();
-        var wall = new Vector();
+        var hit = new Vector();//ray hitting block coordinate
+        var wall = new Vector();//block coordinate
         var slope = (sinThetaValue/cosThetaValue);
-        var dx = isFacingRight ? 1: -1;
-        var dy = dx * slope;
-
+        var dx = isFacingRight ? 1: -1;//stepx
+        var dy = dx * slope;//stepy
+//horizontal grid
         var x = isFacingRight ? Math.ceil(this.player.pos.x) : Math.floor(this.player.pos.x);
         var y = this.player.pos.y + (x - this.player.pos.x);
         while(x >= 0 && x < mapWidth && y >= 0 && y < mapHeight) {
-            wall.x = Math.floor(Math.floor(x + (isFacingRight ? 0  : -1)));
+            wall.x = Math.floor(x + (isFacingRight ? 0  : -1));
             wall.y = Math.floor(y);
             if (this.mapClone[wall.y][wall.x] != 0) {
                 dist = distV = Math.sqrt(Math.pow(x - this.player.pos.x,2) + Math.pow(y-this.player.pos.y,2));
@@ -57,7 +57,6 @@ class Light {
                 hit.y = y;
                 break;
             }
-
             x += dx;
             y += dy;
         }
@@ -80,6 +79,9 @@ class Light {
                     dist = distH;
                     hit.x = x;
                     hit.y = y;
+                }
+                else {
+                    dist = distV;
                 }
                 break;
             }
