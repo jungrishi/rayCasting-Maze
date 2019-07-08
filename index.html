@@ -31,6 +31,8 @@
     <script>
         var gameWrapper = document.getElementById('main-container');
         var mapClone = [];
+        var mapHeight = 0;
+        var mapWidth = 0;
         window.addEventListener("load", function() {
             console.log('html');
             game = new GameWorld(gameWrapper);

@@ -21,20 +21,20 @@ class Player {
 
     draw() {
         
-        let x = this.pos.x * MAP_SCALE - 2;
-        let y = this.pos.y * MAP_SCALE - 2;
-        let w = 4;
-        let h = 4;
+        let x = this.pos.x * MAP_SCALE * SCALE_FACTOR - 2;
+        let y = this.pos.y * MAP_SCALE * SCALE_FACTOR- 2;
+        let w = 4 * SCALE_FACTOR;
+        let h = 4 * SCALE_FACTOR;
 
-        this.rayContext.clearRect(0, 0, 256, 192);
+        this.rayContext.clearRect(0, 0, mapWidth * SCALE_FACTOR * MAP_SCALE, mapHeight * SCALE_FACTOR * MAP_SCALE);
         this.rayContext.fillStyle = 'red';
         this.rayContext.fillRect(x, y, w, h);
         this.rayContext.beginPath();
-        this.rayContext.strokeStyle = 'rgba(255,0,0,0.3)';
+        this.rayContext.strokeStyle = 'rgba(0,0,0,0.3)';
         this.rayContext.moveTo(x + 2, y + 2);
         this.rayContext.lineTo(
-            (this.pos.x + Math.cos(this.alpha) * w) * MAP_SCALE,
-            (this.pos.y + Math.sin(this.alpha)* h) * MAP_SCALE
+            (this.pos.x + Math.cos(this.alpha) * w) * MAP_SCALE * SCALE_FACTOR,
+            (this.pos.y + Math.sin(this.alpha)* h) * MAP_SCALE * SCALE_FACTOR
         );
         this.rayContext.closePath();
         this.rayContext.stroke();

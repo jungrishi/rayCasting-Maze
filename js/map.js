@@ -38,10 +38,12 @@ class MapWorld {
         this.mapWidth = this.map[0].length;
         this.mapHeight = this.map.length;
         mapClone = [...this.map];
-        this.mapCanvas.width = this.mapWidth * MAP_SCALE;
-        this.mapCanvas.height = this.mapHeight * MAP_SCALE; //block size 8px
-        this.mapCanvas.style.width = (this.mapWidth * MAP_SCALE) + 'px';
-        this.mapCanvas.style.height = (this.mapHeight * MAP_SCALE) + 'px';
+        mapWidth =  this.mapWidth;
+        mapHeight = this.mapHeight;
+        this.mapCanvas.width = this.mapWidth * MAP_SCALE * SCALE_FACTOR;
+        this.mapCanvas.height = this.mapHeight * MAP_SCALE * SCALE_FACTOR; //block size 8px
+        this.mapCanvas.style.width = (this.mapWidth * MAP_SCALE * SCALE_FACTOR) + 'px';
+        this.mapCanvas.style.height = (this.mapHeight * MAP_SCALE * SCALE_FACTOR) + 'px';
         gameWrapper.style.width = this.mapCanvas.width + 'px';
         gameWrapper.style.height = this.mapCanvas.height + 'px';
     }
@@ -59,9 +61,9 @@ class MapWorld {
                 if (wall > 0) {
                     this.mapContext.fillStyle = 'black'; //draw a block on the map
                     this.mapContext.fillRect(
-                        x * MAP_SCALE,
-                        y * MAP_SCALE,
-                        MAP_SCALE, MAP_SCALE
+                        x * MAP_SCALE * SCALE_FACTOR,
+                        y * MAP_SCALE * SCALE_FACTOR,
+                        MAP_SCALE * SCALE_FACTOR, MAP_SCALE* SCALE_FACTOR
                     );
                 }
             }

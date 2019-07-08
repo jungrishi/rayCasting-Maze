@@ -48,7 +48,7 @@ class Light {
 
         var x = right ? Math.ceil(this.player.pos.x) : Math.floor(this.player.pos.x);
         var y = this.player.pos.y + (x - this.player.pos.x);
-        while(x >= 0 && x < 32 && y >= 0 && y < 24) {
+        while(x >= 0 && x < mapWidth && y >= 0 && y < mapHeight) {
             wall.x = Math.floor(Math.floor(x + (right ? 0  : -1)));
             wall.y = Math.floor(y);
             if (this.mapClone[wall.y][wall.x] != 0) {
@@ -71,7 +71,7 @@ class Light {
         y = up ? Math.floor(this.player.pos.y):Math.ceil(this.player.pos.y);
         x = this.player.pos.x + ((y - this.player.pos.y) * slope);
 
-        while (x >= 0 && x < 32 && y > 0 && y < 24) {
+        while (x >= 0 && x < mapWidth && y > 0 && y < mapHeight) {
             wall.x = Math.floor(x);
             wall.y = Math.floor(y + (up ? -1:0));
             if(this.mapClone[wall.y][wall.x] != 0) {
@@ -119,12 +119,12 @@ class Light {
         this.player.strokeStyle = 'rgba(255,240,0,0.5)';
         this.player.rayContext.beginPath();
         this.player.rayContext.moveTo(
-            this.player.pos.x * MAP_SCALE ,
-            this.player.pos.y * MAP_SCALE
+            this.player.pos.x * MAP_SCALE * SCALE_FACTOR ,
+            this.player.pos.y * MAP_SCALE * SCALE_FACTOR
         );
         this.player.rayContext.lineTo(
-            ray.x * MAP_SCALE, //* Math.cos(angle),
-            ray.y * MAP_SCALE //* Math.sin(angle)
+            ray.x * MAP_SCALE * SCALE_FACTOR, //* Math.cos(angle),
+            ray.y * MAP_SCALE * SCALE_FACTOR//* Math.sin(angle)
         );
         this.player.rayContext.closePath();
         this.player.rayContext.stroke();

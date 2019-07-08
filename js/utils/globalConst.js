@@ -3,6 +3,8 @@ const UP_ARROW = 38;
 const RIGHT_ARROW = 39;
 const DOWN_ARROW = 40;
 
+const SCALE_FACTOR = 1;
+
 const ROTATE_SPEED = 4;
 const ROTATE_SPEED_R = degToRadian(ROTATE_SPEED);
 const MOVE_SPEED = 0.14;
