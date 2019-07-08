@@ -1,11 +1,15 @@
 class GameWorld {
     constructor(gameWrapper) {
         this.gameContainer = gameWrapper;
-        this.currentStates = [LOAD_STATE,MENU_STATE,START,IS_PLAYING,IS_PAUSED,GAMEOVER];
+//        LOAD_STATE = true;
+//        this.currentStates = [LOAD_STATE,MENU_STATE,START,IS_PLAYING,IS_PAUSED,GAMEOVER];
+        this.currentState = LOAD_STATE;
         this.left = false;
         this.up = false;
         this.right = false;
         this.down = false;
+        
+        this.init();
     }
     
 
@@ -18,7 +22,7 @@ class GameWorld {
 
     startGameLoop() {
         this.mainLoop = requestAnimationFrame(() => this.startGameLoop());
-        switch(this.currentStates) {
+        switch(this.currentState) {
             case MENU_STATE:
                 this.menu.draw();
                 break;
