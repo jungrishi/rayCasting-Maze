@@ -1,55 +1,70 @@
 class GameWorld {
     constructor(gameWrapper) {
         this.gameContainer = gameWrapper;
-        this.gameStates = [{
-            Load_state: true,
-            Menu_state: false,
-            Game_start: {
-                isplaying: false,
-                isPaused: false,
-                gameOver: false,
-                quitGame: false
-            }
-        }]
+        this.currentStates = [LOAD_STATE,MENU_STATE,START,IS_PLAYING,IS_PAUSED,GAMEOVER];
         this.left = false;
         this.up = false;
         this.right = false;
         this.down = false;
     }
+    
 
     init() {
-        this.mapWorld = new MapWorld(); 
-        this.mapWorld.init();
-        this.mapWorld.drawMapWorld();
-        this.player = new Player(PLAYER_START_POSX, PLAYER_START_POSY, START_ANGLE, SPEED, MOVE_SPEED, ROTATE_SPEED_R, this.mapWorld);
-        window.addEventListener("keydown", () => this.handleKeyDown(event));
-        window.addEventListener("keyup", () => this.handleKeyUp(event));
-        this.particle = new Light(PROJECTION_PLANE_WIDTH, RAY_WIDTH, VIEW_DIST, NUM_RAYS, this.player);        
-        // this.particle.castRay();        
-    }
-    
-    castAllRays() {
-        var columnID = 0;
-            var rayAngle = this.player.alpha - HALF_FOV;
-            this.rays = [];
-            for (var i = 0; i < NUM_RAYS; i++) {
-                this.ray = new Ray(rayAngle, this.player);
-                this.ray.cast(columnID);
-                this.rays.push(this.ray);
-                rayAngle += FOV / NUM_RAYS;
-                columnID++;
-            }
-            for(var r of this.rays) {
-                r.render();
-            }
+        this.imageLoader = new ImageLoader();
+        this.audioLoader = new AudioListener();
+        this.resetGameComponents();
+        this.startGameLoop();
     }
 
     startGameLoop() {
-        this.player.move();
-        this.player.draw();
-        this.particle.castRay();
-        // this.castRays();
-        requestAnimationFrame(this.startGameLoop.bind(this));
+        this.mainLoop = requestAnimationFrame(() => this.startGameLoop());
+        switch(this.currentStates) {
+            case MENU_STATE:
+                this.menu.draw();
+                break;
+            case START: 
+                this.mapWorld.init();
+                this.mapWorld.drawMapWorld();
+            case IS_PLAYING:
+                this.player.move();
+                this.player.draw();
+                this.particle.castRay();    
+                break;
+            case IS_PAUSED:
+                this.pauseMenu.draw();
+                break;
+            case GAMEOVER: 
+                this.gameOver();
+                break;                            
+        }
+    }
+
+    resetGameComponents() {
+        this.gameMenu = new GameMenu(this);
+
+        this.mapWorld = new MapWorld(); 
+        // this.mapWorld.init();
+        // this.mapWorld.drawMapWorld();
+        this.player = new Player(
+                                    PLAYER_START_POSX, 
+                                    PLAYER_START_POSY,
+                                    START_ANGLE, SPEED, 
+                                    MOVE_SPEED, 
+                                    ROTATE_SPEED_R, 
+                                    this.mapWorld);
+
+        this.particle = new Light(
+                                    PROJECTION_PLANE_WIDTH, 
+                                    RAY_WIDTH, 
+                                    VIEW_DIST, 
+                                    NUM_RAYS, 
+                                    this.player);  
+                                    
+        LOAD_STATE = false;
+        MENU_STATE = true;                            
+
+        window.addEventListener("keydown", () => this.handleKeyDown(event));
+        window.addEventListener("keyup", () => this.handleKeyUp(event));       
     }
 
     handleKeyDown(event) {

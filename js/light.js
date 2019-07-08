@@ -9,8 +9,15 @@ class Light {
         this.dist = 0;
         this.wall = new Vector();
 
-        this.canvas3D = document.getElementById('objectcanvas');
+        this.canvas3D = document.getElementById('render3D');
         this.ctx3D = this.canvas3D.getContext('2d');
+        this.canvas3D.style.width = 500 + 'px';
+        this.canvas3D.style.height= 500 + 'px';
+        this.canvas3D.height = 500; //block size 8px
+        this.canvas3D.width = 500; //block size 8px
+
+        gameWrapper.style.width = this.canvas3D.width + 'px';
+        gameWrapper.style.height = this.canvas3D.height + 'px';
     }
 
     castRay() {
@@ -25,7 +32,6 @@ class Light {
                 rayAngle + this.player.alpha, stripID
             );
         }
-
     }
 
     castSingleRay(angle, stripID) {
@@ -47,14 +53,14 @@ class Light {
         var wall = new Vector();//block coordinate
         var slope = (sinThetaValue/cosThetaValue);
         var dx = isFacingRight ? 1: -1;//stepx
-        var dy = dx * slope;//stepy
+        var dy = (dx * slope) ;//stepy
 //horizontal grid
         var x = isFacingRight ? Math.ceil(this.player.pos.x) : Math.floor(this.player.pos.x);
         var y = this.player.pos.y + (x - this.player.pos.x);
         while(x >= 0 && x < mapWidth && y >= 0 && y < mapHeight) {
             wall.x = Math.floor(x + (isFacingRight ? 0  : -1));
             wall.y = Math.floor(y);
-            if (this.mapClone[wall.y][wall.x] != 0) {
+            if (this.mapClone[wall.y][wall.x] > 0) {
                 dist = distV = Math.sqrt(Math.pow(x - this.player.pos.x,2) + Math.pow(y-this.player.pos.y,2));
                 hit.x = x;
                 hit.y = y;
@@ -67,16 +73,17 @@ class Light {
         //horizontal
 
         slope = cosThetaValue/sinThetaValue;
-        dy  = isFacingUp?-1:1;
+        dy  = isFacingUp? -1 : 1;
         dx = dy * slope;
+        // dx *= (isFacingRight && dx > 0 )? 1 : -1; 
 
         y = isFacingUp ? Math.floor(this.player.pos.y):Math.ceil(this.player.pos.y);
         x = this.player.pos.x + ((y - this.player.pos.y) * slope);
 
         while (x >= 0 && x < mapWidth && y > 0 && y < mapHeight) {
             wall.x = Math.floor(x);
-            wall.y = Math.floor(y + (isFacingUp ? -1:0));
-            if(this.mapClone[wall.y][wall.x] != 0) {
+            wall.y = Math.floor(y + (isFacingUp ? -1: 0));
+            if(this.mapClone[wall.y][wall.x] > 0) {
                 distH = Math.sqrt(Math.pow(x - this.player.pos.x,2) + Math.pow(y-this.player.pos.y,2));
                 if (!distV || distH < distV) {
                     dist = distH;
@@ -93,7 +100,7 @@ class Light {
             dist = Math.sqrt(dist);
             var angle = this.player.alpha - anglePara;
             var fishEyeRemoveD = dist * Math.cos(angle);
-            this.renderStrip(stripID,fishEyeRemoveD, intensity);
+            // this.renderStrip(stripID,fishEyeRemoveD, intensity);s
             this.drawRay(hit, anglePara);
         }
     }
@@ -103,10 +110,10 @@ class Light {
         var distanceProjectionPlane = (PROJECTION_PLANE_WIDTH * Math.tan(HALF_FOV)) / 2;
         var wallStripHeight = (MAP_SCALE / rayDistance) * distanceProjectionPlane;
         var opacity = (0.5/dist) * 6;
-
-        // this.ctx3D.fillStyle = "hsla(120,100%,50%" + opacity + ")";
+        this.ctx3D.clearRect(0,0,768, 768);
+        // this.ctx3D.fillStyle = mapHeight/2 ? (mapClone[]) ;
         this.ctx3D.fillRect(
-                            stripID * this.pixelWidth,
+                            stripID ,//* this.pixelWidth,
                             (PROJECTION_PLANE_HEIGHT - wallStripHeight)/2,
                             PROJECTION_PLANE_WIDTH,
                             wallStripHeight

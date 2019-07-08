@@ -1,0 +1,5 @@
+class GameMenu {
+    constructor(this) {
+
+    }
+}

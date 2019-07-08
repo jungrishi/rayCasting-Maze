@@ -6,19 +6,35 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Ray Cast</title>
     <style>
+    * {
+        padding: 0px;
+    }    
+    .main-container {
+        margin: 0 auto;
+        padding: 0;
+        width: 100%;
+        height: auto;
+        }
         canvas#mycanvas {
             position: absolute;
+            z-index: 0;
         }
 
         canvas#objectcanvas {
             position: absolute;
+            z-index:0;
+        }
+        canvas#render3D {
+            position: absolute;
+            z-index: 1;
         }
     </style>
 </head>
 <body>
-    <div id="main-container">
+    <div id="main-container"  class="main-container">
     <canvas id="mycanvas"></canvas>
     <canvas id="objectcanvas" ></canvas>
+    <canvas id="render3D" ></canvas>
     </div>
     <script src="./js/utils/util.js"></script>
     <script src="./js/utils/globalConst.js"></script>

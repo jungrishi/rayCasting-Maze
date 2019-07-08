@@ -40,12 +40,12 @@ class MapWorld {
         mapClone = [...this.map];
         mapWidth =  this.mapWidth;
         mapHeight = this.mapHeight;
-        this.mapCanvas.width = this.mapWidth * MAP_SCALE * SCALE_FACTOR;
-        this.mapCanvas.height = this.mapHeight * MAP_SCALE * SCALE_FACTOR; //block size 8px
-        this.mapCanvas.style.width = (this.mapWidth * MAP_SCALE * SCALE_FACTOR) + 'px';
-        this.mapCanvas.style.height = (this.mapHeight * MAP_SCALE * SCALE_FACTOR) + 'px';
-        gameWrapper.style.width = this.mapCanvas.width + 'px';
-        gameWrapper.style.height = this.mapCanvas.height + 'px';
+        this.mapCanvas.width = this.mapWidth * MAP_SCALE;
+        this.mapCanvas.height = this.mapHeight * MAP_SCALE; //block size 8px
+        this.mapCanvas.style.width = (this.mapWidth * MAP_SCALE) + 'px';
+        this.mapCanvas.style.height = (this.mapHeight * MAP_SCALE) + 'px';
+        // gameWrapper.style.width = this.mapCanvas.width + 'px';
+        // gameWrapper.style.height = this.mapCanvas.height + 'px';
     }
 
     drawMapWorld() {
@@ -59,7 +59,7 @@ class MapWorld {
             for (x=0; x < this.mapWidth; x++) {
                 wall = this.map[y][x];
                 if (wall > 0) {
-                    this.mapContext.fillStyle = 'red'; //draw a block on the map
+                    this.mapContext.fillStyle = this.map[y][x] === 1 ? 'black' : 'red'; //draw a block on the map
                     this.mapContext.fillRect(
                         x * MAP_SCALE * SCALE_FACTOR,
                         y * MAP_SCALE * SCALE_FACTOR,
