@@ -1,14 +1,11 @@
 class MapWorld {
-    constructor() {
-        this.mapCanvas = document.getElementById('mycanvas');
-        this.mapContext = this.mapCanvas.getContext('2d');
-        this.map = [];
+    constructor(context) {
+        this.mapContext = context;
+        // this.map = [];
         this.mapWidth = 0;
         this.mapHeight = 0;
-        console.log(this.mapCanvas);
-    }
+        console.log(this.mapContext);
     
-    init() {
         this.map = [
             [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
             [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
@@ -37,24 +34,17 @@ class MapWorld {
         ];
         this.mapWidth = this.map[0].length;
         this.mapHeight = this.map.length;
-        mapClone = [...this.map];
-        mapWidth =  this.mapWidth;
-        mapHeight = this.mapHeight;
-        this.mapCanvas.width = this.mapWidth * MAP_SCALE;
-        this.mapCanvas.height = this.mapHeight * MAP_SCALE; //block size 8px
-        this.mapCanvas.style.width = (this.mapWidth * MAP_SCALE) + 'px';
-        this.mapCanvas.style.height = (this.mapHeight * MAP_SCALE) + 'px';
-        // gameWrapper.style.width = this.mapCanvas.width + 'px';
-        // gameWrapper.style.height = this.mapCanvas.height + 'px';
-    }
+        this.mapWorldHeight = this.mapHeight * MAP_SCALE * SCALE_FACTOR;
+        this.mapWorldWidth = this.mapWidth * MAP_SCALE * SCALE_FACTOR;
+}
 
     drawMapWorld() {
         var x,
             y,
             wall;
-
+        this.mapContext.clearRect(0, 0, this.mapWorldWidth, this.mapWorldHeight);
         this.mapContext.fillStyle = "#fff";
-        this.mapContext.fillRect(0,0,this.mapCanvas.width,this.mapCanvas.height);
+        this.mapContext.fillRect(0,0,this.mapWorldWidthwidth,this.mapWorldHeight);
         for (y=0; y < this.mapHeight; y++) {
             for (x=0; x < this.mapWidth; x++) {
                 wall = this.map[y][x];

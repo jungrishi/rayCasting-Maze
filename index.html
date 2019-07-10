@@ -5,47 +5,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Ray Cast</title>
+    <!-- <link rel="stylesheet" href="style.css"> -->
     <style>
-    * {
-        padding: 0px;
-    }    
-    .main-container {
-        margin: 0 auto;
-        padding: 0;
-        width: 100%;
-        height: auto;
-        }
-        canvas#mycanvas {
-            position: absolute;
-            z-index: 0;
-        }
-
-        canvas#objectcanvas {
-            position: absolute;
-            z-index:0;
-        }
-        canvas#render3D {
-            position: absolute;
-            z-index: 1;
+        #mycanvas {
+            display: block;
         }
     </style>
 </head>
 <body>
-    <div id="main-container"  class="main-container">
+
     <canvas id="mycanvas"></canvas>
-    <canvas id="objectcanvas" ></canvas>
-    <canvas id="render3D" ></canvas>
-    </div>
+
     <script src="./js/utils/util.js"></script>
     <script src="./js/utils/globalConst.js"></script>
+    <script src="./js/utils/imageLoader.js"></script>
     <script src="./js/vector.js"></script>
     <script src="./js/map.js"></script>
-    <!-- <script src="./extra/ray.js"></script> -->
+    <script src="./js/gameMenu.js"></script>
     <script src="./js/rayCaster.js"></script>
     <script src="./js/light.js"></script>
     <script src="./js/gameWorld.js"></script>
     <script>
-        var gameWrapper = document.getElementById('main-container');
+        var gameWrapper = document.getElementById('mycanvas');
         var mapClone = [];
         var mapHeight = 0;
         var mapWidth = 0;
@@ -53,7 +34,6 @@
             console.log('html');
             game = new GameWorld(gameWrapper);
             game.init();
-            game.startGameLoop();
         })
     </script>
 </body>

@@ -4,6 +4,8 @@ const RIGHT_ARROW = 39;
 const DOWN_ARROW = 40;
 
 const SCALE_FACTOR = 1;
+const CANVAS_WIDTH = 400;
+const CANVAS_HEIGHT = 400;
 
 const ROTATE_SPEED = 4;
 const ROTATE_SPEED_R = degToRadian(ROTATE_SPEED);

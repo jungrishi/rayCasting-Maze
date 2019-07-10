@@ -36,7 +36,6 @@ class GameMenu {
             100,
             300, 
             260);
-            // debugger;                    
     }
 
     startGame() {

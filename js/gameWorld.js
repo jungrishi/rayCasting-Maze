@@ -20,6 +20,7 @@ class GameWorld {
 
     startGameLoop() {
         this.mainLoopID = requestAnimationFrame(() => this.startGameLoop());
+        this.ctx.clearRect(0,0,CANVAS_WIDTH, CANVAS_HEIGHT);
         switch(this.currentState) {
             case MENU_STATE:
                 this.gameMenu.draw();
@@ -29,10 +30,10 @@ class GameWorld {
                 this.currentState = IS_PLAYING;
                 break;
             case IS_PLAYING:
-                this.player.draw();
+                this.mapWorld.drawMapWorld();
                 this.player.move();
+                this.player.draw();
                 this.particle.castRay();    
-                // this.mapWorld.drawMapWorld();
                 break;
             // case IS_PAUSED:
             //     this.pauseMenu.draw();
@@ -46,25 +47,25 @@ class GameWorld {
     }
 
     resetGameComponents() {
-        this.gameMenu = new GameMenu(this, this.ctx);
+        this.gameMenu = new GameMenu(this, this.ctx); //blunder
 
         this.mapWorld = new MapWorld(this.ctx); 
-        // this.player = new Player(
-        //                             PLAYER_START_POSX, 
-        //                             PLAYER_START_POSY,
-        //                             START_ANGLE, SPEED, 
-        //                             MOVE_SPEED, 
-        //                             ROTATE_SPEED_R,
-        //                             this.ctx
-        //                             );
+        this.player = new Player(
+                                    PLAYER_START_POSX, 
+                                    PLAYER_START_POSY,
+                                    START_ANGLE, SPEED, 
+                                    MOVE_SPEED, 
+                                    ROTATE_SPEED_R,
+                                    this.ctx
+                                    );
 
-        // this.particle = new Light(
-        //                             PROJECTION_PLANE_WIDTH, 
-        //                             RAY_WIDTH, 
-        //                             VIEW_DIST, 
-        //                             NUM_RAYS, 
-        //                             this.player,
-        //                             this.ctx);  
+        this.particle = new Light(
+                                    PROJECTION_PLANE_WIDTH, 
+                                    RAY_WIDTH, 
+                                    VIEW_DIST, 
+                                    NUM_RAYS, 
+                                    this.player,
+                                    this.ctx);  
                                     
         this.currentState = MENU_STATE;    
 

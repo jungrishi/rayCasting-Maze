@@ -1,43 +1,34 @@
-class Player {
-    constructor(x, y, alpha, speed, moveSpeed, rotSpeed, map) {
-        this.rayCanvas = document.getElementById('objectcanvas')
-        this.rayContext = this.rayCanvas.getContext('2d');
+class Player extends MapWorld {
+    constructor(x, y, alpha, speed, moveSpeed, rotSpeed, context) {
+        super();
+        this.rayContext = context;
         this.pos = new Vector(x, y);
-        console.log(this.rayCanvas);
         this.dir = 0;
         this.alpha = alpha; //rotation angle 
         this.speed = speed; 
         this.moveSpeed = moveSpeed;
         this.rotationSpeed = rotSpeed;
-        this.map = map;
-
-        this.rayCanvas.width = this.map.mapCanvas.width;
-        this.rayCanvas.height = this.map.mapCanvas.height;
-
-        this.rayCanvas.style.width = this.rayCanvas.width + 'px';
-        this.rayCanvas.style.height = this.rayCanvas.height + 'px';
-
     }
 
     draw() {
-        
-        let x = this.pos.x * MAP_SCALE * SCALE_FACTOR - 2;
-        let y = this.pos.y * MAP_SCALE * SCALE_FACTOR- 2;
+        console.log('draw')
+        let x = this.pos.x  * MAP_SCALE * SCALE_FACTOR - 2;
+        let y = this.pos.y  * MAP_SCALE * SCALE_FACTOR- 2;
         let w = 4 * SCALE_FACTOR;
         let h = 4 * SCALE_FACTOR;
-
-        this.rayContext.clearRect(0, 0, mapWidth * SCALE_FACTOR * MAP_SCALE, mapHeight * SCALE_FACTOR * MAP_SCALE);
-        this.rayContext.fillStyle = 'red';
+        console.log(x,y,w,h);
+        this.rayContext.fillStyle = 'black';
         this.rayContext.fillRect(x, y, w, h);
         this.rayContext.beginPath();
         this.rayContext.strokeStyle = 'rgba(0,0,0,0.3)';
         this.rayContext.moveTo(x + 2, y + 2);
         this.rayContext.lineTo(
-            (this.pos.x + Math.cos(this.alpha) * w) * MAP_SCALE * SCALE_FACTOR,
-            (this.pos.y + Math.sin(this.alpha)* h) * MAP_SCALE * SCALE_FACTOR
+            (this.pos.x + Math.cos(this.alpha) * w)  * MAP_SCALE * SCALE_FACTOR,
+            (this.pos.y + Math.sin(this.alpha)* h)  * MAP_SCALE * SCALE_FACTOR
         );
         this.rayContext.closePath();
         this.rayContext.stroke();
+        // debugger;
     }
 
     move() {
@@ -62,11 +53,11 @@ class Player {
         }
 
     isBlocking(x,y) {
-        if (y < 1 || y > this.map.mapHeight - 1 || x < 1 || x > this.map.mapWidth - 1) {
+        if (y < 1 || y > this.mapHeight - 1 || x < 1 || x > this.mapWidth - 1) {
             return true;
         }
 
-        return (mapClone[Math.floor(y)][Math.floor(x)] != 0);
+        return (this.map[Math.floor(y)][Math.floor(x)] != 0);
     }
 
     rotateLeft() {
