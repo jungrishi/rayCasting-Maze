@@ -20,7 +20,7 @@ class Light extends MapWorld{
             rayViewDist = Math.sqrt(rayPosition  * rayPosition + this.perpdistance * this.perpdistance);
             var rayAngle = Math.asin(rayPosition/rayViewDist);
             this.castSingleRay(
-                rayAngle + this.player.alpha, stripID
+                rayAngle + this.player.alpha, stripID++
             );
         }
     }
@@ -71,7 +71,6 @@ class Light extends MapWorld{
         slope = cosThetaValue/sinThetaValue;
         dy  = isFacingUp? -1 : 1;
         dx = dy * slope;
-        // dx *= (isFacingRight && dx > 0 )? 1 : -1; 
 
         y = isFacingUp ? Math.floor(this.player.pos.y):Math.ceil(this.player.pos.y);
         x = this.player.pos.x + ((y - this.player.pos.y) * slope);
@@ -93,8 +92,7 @@ class Light extends MapWorld{
         }
 
         if (dist) {
-            dist = Math.sqrt(dist);
-            var angle = this.player.alpha - anglePara; //check sign 
+            var angle = this.player.alpha - anglePara ; //check sign 
             var fishEyeRemoveD = dist * Math.cos(angle);
             this.renderStrip(stripID,fishEyeRemoveD, intensity);
             this.drawRay(hit);
@@ -102,33 +100,24 @@ class Light extends MapWorld{
     }
 
     renderStrip(stripID, dist, intensity) {
-        // var rayDistance = dist; 
-        // var distanceProjectionPlane = (MAP_SCALE * mapWidth)/ (Math.tan(HALF_FOV) * 2) ;
-        // var wallStripHeight = (MAP_SCALE * mapWidth / rayDistance) * distanceProjectionPlane;
-        // var opacity = (0.5/dist) * 6;
-        // // this.ctx3D.clearRect(0,0,768, 768);
-        // // this.ctx3D.fillStyle = mapHeight/2 ? (mapClone[]) ;
-        // this.ctx3D.fillRect(
-        //                     stripID * this.pixelWidth,
-        //                     (PROJECTION_PLANE_HEIGHT - wallStripHeight)/2,
-        //                     this.pixelWidth,
-        //                     wallStripHeight
-        //                 );
-        
-        var height  = Math.round((MAP_SCALE * dist)/VIEW_DIST);
-        var topOffset = ((this.projectionPlaneHeight - height)/2);
-        var leftoffset = stripID * this.pixelWidth;
+        var distanceProjection = (PROJECTION_PLANE_WIDTH / 2) * Math.tan(HALF_FOV);
+        var wallStripHeight = (MAP_SCALE / dist) * distanceProjection;
+        console.log({
+            distanceProjection,
+            wallStripHeight
+        })
+        var opacity = (0.5/dist) * 6;
+        this.ctx3D.fillStyle = "rgba(255, 100, 240, opacity)";
         this.ctx3D.fillRect(
-            300,
-            300,
-            this.pixelWidth,
-            height
-        );
-
+                            stripID * this.pixelWidth + this.mapWorldWidth,
+                            (PROJECTION_PLANE_HEIGHT - wallStripHeight)/2 + this.mapWorldHeight,
+                            this.pixelWidth,
+                            wallStripHeight
+                        );
     };
 
     drawRay(ray) {
-        this.ctx3D.strokeStyle = 'rgba(255,240,0,0.5)';
+        this.ctx3D.strokeStyle = 'rgba(255,240,255,0.5)';
         this.ctx3D.lineWidth= 0.5;
         this.ctx3D.beginPath();
         this.ctx3D.moveTo(

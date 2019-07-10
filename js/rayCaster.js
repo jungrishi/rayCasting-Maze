@@ -14,13 +14,13 @@ class Player extends MapWorld {
         console.log('draw')
         let x = this.pos.x  * MAP_SCALE * SCALE_FACTOR - 2;
         let y = this.pos.y  * MAP_SCALE * SCALE_FACTOR- 2;
-        let w = 4 * SCALE_FACTOR;
-        let h = 4 * SCALE_FACTOR;
+        let w = 4  ;
+        let h = 4  ;
         console.log(x,y,w,h);
         this.rayContext.fillStyle = 'black';
         this.rayContext.fillRect(x, y, w, h);
+        this.rayContext.strokeStyle = 'rgba(255,0,0,0.3)';
         this.rayContext.beginPath();
-        this.rayContext.strokeStyle = 'rgba(0,0,0,0.3)';
         this.rayContext.moveTo(x + 2, y + 2);
         this.rayContext.lineTo(
             (this.pos.x + Math.cos(this.alpha) * w)  * MAP_SCALE * SCALE_FACTOR,

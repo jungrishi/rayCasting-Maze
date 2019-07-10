@@ -3,8 +3,8 @@ const UP_ARROW = 38;
 const RIGHT_ARROW = 39;
 const DOWN_ARROW = 40;
 
-const SCALE_FACTOR = 1;
-const CANVAS_WIDTH = 400;
+const SCALE_FACTOR = 0.4;
+const CANVAS_WIDTH = 600;
 const CANVAS_HEIGHT = 400;
 
 const ROTATE_SPEED = 4;
