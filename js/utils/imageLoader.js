@@ -8,8 +8,8 @@ class ImageLoader {
 
     init() {
         this.loadImage('loadingRun', 'images/fireman.png');
-        this.loadImage('menu', 'images/menu.png');
-
+        this.loadImage('menu', 'images/maze.png');
+        // this.loadImage('menu', 'images/maze.png');
         this.numberOfImages = Object.keys(this.images).length;
     }
 
@@ -24,4 +24,4 @@ class ImageLoader {
     hasAllImagesLoaded() {
         return this.numberOfLoadedImage == this.numberOfImages ? true: false;
     }
- }
+}

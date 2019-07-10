@@ -1,0 +1,23 @@
+.main-container {
+    width: 500px;
+    height: 500px;
+    margin: 0 auto;
+    border:1px solid black;
+}
+
+* {
+    padding: 0px;
+}    
+    canvas#mycanvas {
+        position: absolute;
+        z-index: 0;
+    }
+
+    canvas#objectcanvas {
+        position: absolute;
+        z-index:0;
+    }
+    canvas#render3D {
+        position: absolute;
+        z-index: 1;
+    }
