@@ -1,76 +1,77 @@
 class GameWorld {
-    constructor(gameWrapper) {
-        this.gameContainer = gameWrapper;
-//        LOAD_STATE = true;
-//        this.currentStates = [LOAD_STATE,MENU_STATE,START,IS_PLAYING,IS_PAUSED,GAMEOVER];
+    constructor(canvasEle) {
+        this.canvasElement = canvasEle;
+        this.ctx = this.canvasElement.getContext("2d");  
+        this.canvasElement.width = CANVAS_WIDTH;
+        this.canvasElement.height = CANVAS_HEIGHT;
+
         this.currentState = LOAD_STATE;
         this.left = false;
         this.up = false;
         this.right = false;
         this.down = false;
-        
-        this.init();
     }
     
-
     init() {
         this.imageLoader = new ImageLoader();
-        this.audioLoader = new AudioListener();
         this.resetGameComponents();
         this.startGameLoop();
     }
 
     startGameLoop() {
-        this.mainLoop = requestAnimationFrame(() => this.startGameLoop());
+        this.mainLoopID = requestAnimationFrame(() => this.startGameLoop());
         switch(this.currentState) {
             case MENU_STATE:
-                this.menu.draw();
+                this.gameMenu.draw();
                 break;
             case START: 
-                this.mapWorld.init();
                 this.mapWorld.drawMapWorld();
+                this.currentState = IS_PLAYING;
+                break;
             case IS_PLAYING:
-                this.player.move();
                 this.player.draw();
+                this.player.move();
                 this.particle.castRay();    
+                // this.mapWorld.drawMapWorld();
                 break;
-            case IS_PAUSED:
-                this.pauseMenu.draw();
-                break;
-            case GAMEOVER: 
-                this.gameOver();
+            // case IS_PAUSED:
+            //     this.pauseMenu.draw();
+            //     break;
+            // case GAMEOVER: 
+            //     this.gameOver();
+            //     break;
+            default: 
                 break;                            
         }
     }
 
     resetGameComponents() {
-        this.gameMenu = new GameMenu(this);
+        this.gameMenu = new GameMenu(this, this.ctx);
 
-        this.mapWorld = new MapWorld(); 
-        // this.mapWorld.init();
-        // this.mapWorld.drawMapWorld();
-        this.player = new Player(
-                                    PLAYER_START_POSX, 
-                                    PLAYER_START_POSY,
-                                    START_ANGLE, SPEED, 
-                                    MOVE_SPEED, 
-                                    ROTATE_SPEED_R, 
-                                    this.mapWorld);
+        this.mapWorld = new MapWorld(this.ctx); 
+        // this.player = new Player(
+        //                             PLAYER_START_POSX, 
+        //                             PLAYER_START_POSY,
+        //                             START_ANGLE, SPEED, 
+        //                             MOVE_SPEED, 
+        //                             ROTATE_SPEED_R,
+        //                             this.ctx
+        //                             );
 
-        this.particle = new Light(
-                                    PROJECTION_PLANE_WIDTH, 
-                                    RAY_WIDTH, 
-                                    VIEW_DIST, 
-                                    NUM_RAYS, 
-                                    this.player);  
+        // this.particle = new Light(
+        //                             PROJECTION_PLANE_WIDTH, 
+        //                             RAY_WIDTH, 
+        //                             VIEW_DIST, 
+        //                             NUM_RAYS, 
+        //                             this.player,
+        //                             this.ctx);  
                                     
-        LOAD_STATE = false;
-        MENU_STATE = true;                            
+        this.currentState = MENU_STATE;    
 
         window.addEventListener("keydown", () => this.handleKeyDown(event));
         window.addEventListener("keyup", () => this.handleKeyUp(event));       
     }
-
+    
     handleKeyDown(event) {
         console.log(this);
         switch (event.keyCode) {
@@ -89,7 +90,10 @@ class GameWorld {
             case DOWN_ARROW:
                 this.down = true;
                 this.player.moveBackward(event); 
-                }
+            default:
+                break;    
+            }
+
     }
 
     handleKeyUp(event) {
