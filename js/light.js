@@ -12,13 +12,13 @@ class Light extends MapWorld{
     }
 
     castRay() {
-        var stripID = 0;
-        var rayViewDist;
+        let stripID = 0;
+        let rayViewDist;
 
-        for(var i=0;i<this.numRays;i++) {
-            var rayPosition = (-this.numRays/2 + i) * this.pixelWidth;
+        for(let i=0;i<this.numRays;i++) {
+            let rayPosition = (-this.numRays/2 + i) * this.pixelWidth;
             rayViewDist = Math.sqrt(rayPosition  * rayPosition + this.perpdistance * this.perpdistance);
-            var rayAngle = Math.asin(rayPosition/rayViewDist);
+            let rayAngle = Math.asin(rayPosition/rayViewDist);
             this.castSingleRay(
                 rayAngle + this.player.alpha, stripID++
             );
@@ -26,31 +26,31 @@ class Light extends MapWorld{
     }
 
     castSingleRay(angle, stripID) {
-        var sinThetaValue,cosThetaValue, anglePara;
+        let sinThetaValue,cosThetaValue, anglePara;
         anglePara = normalizeAngle(angle);
 
-        var isFacingRight = (anglePara > DOUBLEPI * 0.75 || anglePara < DOUBLEPI * 0.25);
-        var isFacingdown = (anglePara >= 0 && anglePara <= Math.PI);
-        var isFacingUp = !isFacingdown;
+        let isFacingRight = (anglePara > DOUBLEPI * 0.75 || anglePara < DOUBLEPI * 0.25);
+        let isFacingdown = (anglePara >= 0 && anglePara <= Math.PI);
+        let isFacingUp = !isFacingdown;
         
         sinThetaValue = Math.sin(anglePara);
         cosThetaValue = Math.cos(anglePara);
 
-        var intensity;
-        var distV = 0;
-        var distH = 0;
-        var dist;
+        let intensity;
+        let distV = 0;
+        let distH = 0;
+        let dist;
 
-        var hit = new Vector();//ray hitting block coordinate
-        var wall = new Vector();//block coordinate
-        var slope = (sinThetaValue/cosThetaValue);
-        var dx = isFacingRight ? 1: -1;//stepx
-        var dy = (dx * slope) ;//stepy
+        let hit = new Vector();//ray hitting block coordinate
+        let wall = new Vector();//block coordinate
+        let slope = (sinThetaValue/cosThetaValue);
+        let dx = isFacingRight ? 1: -1;//stepx
+        let dy = (dx * slope) ;//stepy
 
 
 //vertical grid
-        var x = isFacingRight ? Math.ceil(this.player.pos.x) : Math.floor(this.player.pos.x);
-        var y = this.player.pos.y + (x - this.player.pos.x) * slope;
+        let x = isFacingRight ? Math.ceil(this.player.pos.x) : Math.floor(this.player.pos.x);
+        let y = this.player.pos.y + (x - this.player.pos.x) * slope;
         
         while(x >= 0 && x < this.mapWidth && y >= 0 && y < this.mapHeight) {
             wall.x = Math.floor(x + (isFacingRight ? 0  : -1));
@@ -92,22 +92,39 @@ class Light extends MapWorld{
         }
 
         if (dist) {
-            var angle = this.player.alpha - anglePara ; //check sign 
-            var fishEyeRemoveD = dist * Math.cos(angle);
+            let angle = this.player.alpha - anglePara ; 
+            let fishEyeRemoveD = dist * Math.cos(angle);
             this.renderStrip(stripID,fishEyeRemoveD, intensity);
             this.drawRay(hit);
         }
     }
 
     renderStrip(stripID, dist, intensity) {
-        var distanceProjection = (PROJECTION_PLANE_WIDTH / 2) * Math.tan(HALF_FOV);
-        var wallStripHeight = (MAP_SCALE / dist) * distanceProjection;
-        console.log({
-            distanceProjection,
-            wallStripHeight
-        })
-        var opacity = (0.5/dist) * 6;
-        this.ctx3D.fillStyle = "rgba(255, 100, 240, opacity)";
+        let distanceProjection = (PROJECTION_PLANE_WIDTH / 2) * Math.tan(HALF_FOV);
+        let wallStripHeight = (MAP_SCALE / dist) * distanceProjection;
+        let opacity = (0.7/dist) * 1;
+        let c1, c2, c3;
+        if (dist > 3){
+            dist = dist/CANVAS_HEIGHT; 
+            if (dist >0 && dist<0.3) {
+                c1 = Math.random() * 256;
+                c2 = Math.random() * 256;
+                c3 = Math.random() * 256;
+            }
+
+            else {
+                c1 = 0;
+                c2 = 0;
+                c3 = 0;
+
+            }
+        }        
+        else {
+            c1 = 255;
+            c2 = 0;
+            c3 = 0
+        }
+        this.ctx3D.fillStyle = "rgba("+c1+" ,"+c2+", "+c3+", "+ opacity +")";
         this.ctx3D.fillRect(
                             stripID * this.pixelWidth + this.mapWorldWidth,
                             (PROJECTION_PLANE_HEIGHT - wallStripHeight)/2 + this.mapWorldHeight,
@@ -117,7 +134,6 @@ class Light extends MapWorld{
     };
 
     drawRay(ray) {
-        this.ctx3D.strokeStyle = 'rgba(255,240,255,0.5)';
         this.ctx3D.lineWidth= 0.5;
         this.ctx3D.beginPath();
         this.ctx3D.moveTo(
@@ -129,6 +145,5 @@ class Light extends MapWorld{
             ray.y * MAP_SCALE * SCALE_FACTOR 
         );
         this.ctx3D.closePath();
-        this.ctx3D.stroke();
     }
 }

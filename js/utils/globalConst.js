@@ -1,7 +1,38 @@
-const LEFT_ARROW = 37;
-const UP_ARROW = 38;
-const RIGHT_ARROW = 39;
-const DOWN_ARROW = 40;
+//color for each block and power ups and obstacle define
+
+const KEY_BIND = {
+    LEFT_ARROW :37,
+    UP_ARROW :38,
+    RIGHT_ARROW:39,
+    DOWN_ARROW :40,
+    START_KEY: 13,
+    PAUSE_KEY: 32,
+    QUIT_KEY: 81,
+}
+
+const DIRECTION = {
+    LEFT_ROTATE:   KEY_BIND.LEFT_ARROW,
+    RIGHT_ROTATE:  KEY_BIND.RIGHT_ARROW,
+    FORWARD_MOVE:  KEY_BIND.UP_ARROW,
+    BACKWARD_MOVE: KEY_BIND.DOWN_ARROW
+}
+
+const GAME_STATES_PLAYER = {
+    START_GAME: KEY_BIND.START_KEY,     
+    PAUSE_GAME: KEY_BIND.PAUSE_KEY,
+    QUIT_GAME:  KEY_BIND.QUIT_KEY
+}
+
+const PAUSE_TEXT = ["Game Paused \n Press 'Space Bar' To Resume or  'q' to Quit"];
+const START_TEXT = ["WelCome! To The Game", "Press Enter to start the Game"];
+
+const LOAD_STATE =0;
+const  MENU_STATE=1;
+     const       START=2;
+          const  IS_PLAYING=3;
+         const   IS_PAUSED=4;
+       const     GAMEOVER=5;
+
 
 const SCALE_FACTOR = 0.4;
 const CANVAS_WIDTH = 600;
@@ -27,9 +58,3 @@ const VIEW_DIST = (PROJECTION_PLANE_WIDTH / 2) / Math.tan(HALF_FOV); //perp dist
 const NUM_RAYS = (PROJECTION_PLANE_WIDTH / RAY_WIDTH);
 const MAX_VISION_RANGE = 100;
 
-var LOAD_STATE = 0
-var MENU_STATE = 1
-var START = 2
-var IS_PLAYING = 3
-var IS_PAUSED = 4
-var GAMEOVER = 5

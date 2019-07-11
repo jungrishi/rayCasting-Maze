@@ -5,7 +5,11 @@ class GameWorld {
         this.canvasElement.width = CANVAS_WIDTH;
         this.canvasElement.height = CANVAS_HEIGHT;
 
-        this.currentState = LOAD_STATE;
+        this.isplaying = false;
+        this.currentState = MENU_STATE;
+        this.checkPauseState = 0;
+        this.stateStack = [];
+
         this.left = false;
         this.up = false;
         this.right = false;
@@ -13,9 +17,28 @@ class GameWorld {
     }
     
     init() {
-        this.imageLoader = new ImageLoader();
         this.resetGameComponents();
         this.startGameLoop();
+    }
+
+    pauseGame() {
+        console.log(this.checkPauseState);
+        this.checkPauseState === 0 ? 1 : 0;
+        // debugger;
+        switch (this.checkPauseState) { //how??
+            // case 1:
+            //     this.ctx = this.stateStack.pop();
+            //     console.log(this.stateStack.pop());
+            //     debugger;
+            //     this.isplaying = true;
+            //     this.currentState = IS_PLAYING;
+            //     break;
+            case 0:
+                // this.stateStack.push(this.context);
+                this.gameMenu.draw();
+                break;
+        } 
+
     }
 
     startGameLoop() {
@@ -35,19 +58,19 @@ class GameWorld {
                 this.player.draw();
                 this.particle.castRay();    
                 break;
-            // case IS_PAUSED:
-            //     this.pauseMenu.draw();
-            //     break;
-            // case GAMEOVER: 
-            //     this.gameOver();
-            //     break;
+            case IS_PAUSED:
+                this.pauseGame();
+                break;
+            case GAMEOVER: 
+                this.gameOver();
+                break;
             default: 
                 break;                            
         }
     }
 
     resetGameComponents() {
-        this.gameMenu = new GameMenu(this, this.ctx); //blunder
+        this.gameMenu = new GameMenu(this.ctx); //blunder
 
         this.mapWorld = new MapWorld(this.ctx); 
         this.player = new Player(
@@ -69,44 +92,49 @@ class GameWorld {
                                     
         this.currentState = MENU_STATE;    
 
-        window.addEventListener("keydown", () => this.handleKeyDown(event));
-        window.addEventListener("keyup", () => this.handleKeyUp(event));       
+        this.inputHandlerID1 = window.addEventListener("keydown", this.handleKeyDown.bind(this));
+        this.inputHandlerID2 = window.addEventListener("keyup",  this.handleKeyUp.bind(this));       
     }
-    
-    handleKeyDown(event) {
-        console.log(this);
-        switch (event.keyCode) {
-            case LEFT_ARROW:
-                this.left = true;
-                this.player.rotateLeft(event);
-                break;
-            case UP_ARROW:
-                this.up = true;
-                this.player.moveForward(event);
-                break;
-            case RIGHT_ARROW:
-                this.right = true;
-                this.player.rotateRight(event);
-                break;
-            case DOWN_ARROW:
-                this.down = true;
-                this.player.moveBackward(event); 
-            default:
-                break;    
-            }
 
+handleKeyDown() {
+    switch (event.keyCode) {
+            case DIRECTION.LEFT_ROTATE:
+                this.left = true;
+                if (this.isplaying) {this.player.rotateLeft(event)};
+                break;
+            case DIRECTION.FORWARD_MOVE:
+                this.up = true;
+                if (this.isplaying){this.player.moveForward(event)};
+                break;
+            case DIRECTION.RIGHT_ROTATE:
+                this.right = true;
+                if (this.isplaying){this.player.rotateRight(event);}
+                break;
+            case DIRECTION.BACKWARD_MOVE:
+                this.down = true;
+                if (this.isplaying){this.player.moveBackward(event);} 
+                break;
+            case GAME_STATES_PLAYER.START_GAME:
+                this.isplaying = true;
+                this.currentState = START;
+                break;    
+            case GAME_STATES_PLAYER.PAUSE_GAME:     
+                this.isplaying = false;
+                this.currentState = IS_PAUSED;
+                break;           
+            }
     }
 
     handleKeyUp(event) {
         switch (event.keyCode) {
-            case LEFT_ARROW:
-            case RIGHT_ARROW:
+            case DIRECTION.LEFT_ROTATE:
+            case DIRECTION.RIGHT_ROTATE:
                 this.left = false;
                 this.right = false;
                 this.player.stopRotate();
                 break;
-            case UP_ARROW:
-            case DOWN_ARROW:
+            case DIRECTION.FORWARD_MOVE:
+            case DIRECTION.BACKWARD_MOVE:
                 this.up = false;
                 this.down = false;
                 this.player.stopMovement();

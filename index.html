@@ -21,15 +21,13 @@
     <script src="./js/utils/imageLoader.js"></script>
     <script src="./js/vector.js"></script>
     <script src="./js/map.js"></script>
-    <script src="./js/gameMenu.js"></script>
     <script src="./js/rayCaster.js"></script>
     <script src="./js/light.js"></script>
+    <script src="./js/gameMenu.js"></script>
     <script src="./js/gameWorld.js"></script>
+
     <script>
-        var gameWrapper = document.getElementById('mycanvas');
-        var mapClone = [];
-        var mapHeight = 0;
-        var mapWidth = 0;
+        let gameWrapper = document.getElementById('mycanvas');
         window.addEventListener("load", function() {
             console.log('html');
             game = new GameWorld(gameWrapper);

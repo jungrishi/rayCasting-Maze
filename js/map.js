@@ -1,7 +1,6 @@
 class MapWorld {
     constructor(context) {
         this.mapContext = context;
-        // this.map = [];
         this.mapWidth = 0;
         this.mapHeight = 0;
         console.log(this.mapContext);
@@ -39,11 +38,11 @@ class MapWorld {
 }
 
     drawMapWorld() {
-        var x,
+        let x,
             y,
             wall;
         this.mapContext.clearRect(0, 0, this.mapWorldWidth, this.mapWorldHeight);
-        this.mapContext.fillStyle = "#fff";
+        this.mapContext.fillStyle = '#000';
         this.mapContext.fillRect(0,0,this.mapWorldWidthwidth,this.mapWorldHeight);
         for (y=0; y < this.mapHeight; y++) {
             for (x=0; x < this.mapWidth; x++) {

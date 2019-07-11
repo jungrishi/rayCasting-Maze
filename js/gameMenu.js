@@ -1,47 +1,31 @@
-class GameMenu {
-    constructor(ref, gameWorldContext) {
-        this.worldRef = ref;
-        this.gameWorldContext = gameWorldContext;
-        window.addEventListener("keydown",this.menuController.bind(this));
-    }
-
-    menuController() {
-        if(event.keyCode == 13){
-            this.startGame();
-        }
-        else{
-            return;
-        }
+class GameMenu  {
+    constructor(ctx) {
+        this.context = ctx;
+        console.log(this.context);
     }
 
     draw() {
-        this.gameWorldContext.fillStyle = "#d5d5d5";
-        this.gameWorldContext.fillRect(
+        this.context.fillStyle = "#d5d5d5";
+        this.context.fillRect(
             0, 0,
-            this.gameWorldContext.width,
-            this.gameWorldContext.height
+            this.context.width,
+            this.context.height
         )
-        this.gameWorldContext.font = "65px Georgia";
-        this.gameWorldContext.color = 'black';
-        var gradient = this.gameWorldContext.createLinearGradient(0,0,20,0)
+        this.context.font = "65px Georgia";
+        this.context.color = 'black';
+        let gradient = this.context.createLinearGradient(0,0,20,0)
         gradient.addColorStop("0", "magenta");
         gradient.addColorStop("0.5", "blue");
         gradient.addColorStop("1.0", "red");
-        this.gameWorldContext.fillStyle = gradient;
-        this.gameWorldContext.fillText("WelCome! To The Game", 
+        this.context.fillStyle = gradient;
+        this.context.fillText(START_TEXT[0], 
                             100,
                             100 , 
                             260);
-        this.gameWorldContext.fillText("Press Enter to start the Game", 
+        this.context.fillText(START_TEXT[1], 
             100,
             300, 
             260);
-    }
-
-    startGame() {
-        this.gameWorldContext.clearRect(0, 0, this.worldRef.canvasElement.width, this.worldRef.canvasElement.height);
-        removeEventListener('keydown', this.menuController, true);
-        this.worldRef.currentState = START;
     }
 }
         
