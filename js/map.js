@@ -7,7 +7,7 @@ class MapWorld {
     
         this.map = [
             [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
-            [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+            [1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
             [1,0,0,0,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
             [1,0,0,0,0,0,0,0,1,1,1,2,1,1,1,1,1,2,1,1,1,2,1,0,0,0,0,0,0,0,0,1],
             [1,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,1],
@@ -41,8 +41,9 @@ class MapWorld {
         let x,
             y,
             wall;
-        this.mapContext.clearRect(0, 0, this.mapWorldWidth, this.mapWorldHeight);
-        this.mapContext.fillStyle = '#000';
+        // this.mapContext.clearRect(0, 0, this.mapWorldWidth, this.mapWorldHeight);
+        this.mapContext.beginPath();
+        this.mapContext.fillStyle = '#000000';
         this.mapContext.fillRect(0,0,this.mapWorldWidthwidth,this.mapWorldHeight);
         for (y=0; y < this.mapHeight; y++) {
             for (x=0; x < this.mapWidth; x++) {
@@ -57,5 +58,6 @@ class MapWorld {
                 }
             }
         }
+        this.mapContext.closePath();
     }
 }

@@ -5,6 +5,7 @@ class GameMenu  {
     }
 
     draw() {
+        this.context.beginPath();
         this.context.fillStyle = "#d5d5d5";
         this.context.fillRect(
             0, 0,
@@ -26,6 +27,7 @@ class GameMenu  {
             100,
             300, 
             260);
+        this.context.closePath();    
     }
 }
         

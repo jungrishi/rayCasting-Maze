@@ -50,10 +50,14 @@ class GameWorld {
                 break;
             case START: 
                 this.mapWorld.drawMapWorld();
+                this.objects.draw();
+                // this.objects.move();
                 this.currentState = IS_PLAYING;
                 break;
             case IS_PLAYING:
                 this.mapWorld.drawMapWorld();
+                this.objects.draw();
+                // this.objects.move();
                 this.player.move();
                 this.player.draw();
                 this.particle.castRay();    
@@ -89,7 +93,10 @@ class GameWorld {
                                     NUM_RAYS, 
                                     this.player,
                                     this.ctx);  
+        
                                     
+
+        this.objects = new Obstacles(10,5, this.ctx, 'red', 1, this.mapWorld);                                    
         this.currentState = MENU_STATE;    
 
         this.inputHandlerID1 = window.addEventListener("keydown", this.handleKeyDown.bind(this));

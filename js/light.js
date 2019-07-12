@@ -100,30 +100,31 @@ class Light extends MapWorld{
     }
 
     renderStrip(stripID, dist, intensity) {
-        let distanceProjection = (PROJECTION_PLANE_WIDTH / 2) * Math.tan(HALF_FOV);
-        let wallStripHeight = (MAP_SCALE / dist) * distanceProjection;
+        // console.log(distanceProjection);
+        let wallStripHeight = (MAP_SCALE / dist) * VIEW_DIST;
+        console.log(wallStripHeight);
         let opacity = (0.7/dist) * 1;
         let c1, c2, c3;
-        if (dist > 3){
-            dist = dist/CANVAS_HEIGHT; 
-            if (dist >0 && dist<0.3) {
-                c1 = Math.random() * 256;
-                c2 = Math.random() * 256;
-                c3 = Math.random() * 256;
-            }
+        // if (dist > 3){
+        //     dist = dist/CANVAS_HEIGHT; 
+        //     if (dist >0 && dist<0.3) {
+        //         c1 = Math.random() * 256;
+        //         c2 = Math.random() * 256;
+        //         c3 = Math.random() * 256;
+        //     }
 
-            else {
-                c1 = 0;
-                c2 = 0;
-                c3 = 0;
+        //     else {
+        //         c1 = 0;
+        //         c2 = 0;
+        //         c3 = 0;
 
-            }
-        }        
-        else {
+        //     }
+        // }        
+        // else {
             c1 = 255;
             c2 = 0;
             c3 = 0
-        }
+        // }
         this.ctx3D.fillStyle = "rgba("+c1+" ,"+c2+", "+c3+", "+ opacity +")";
         this.ctx3D.fillRect(
                             stripID * this.pixelWidth + this.mapWorldWidth,
@@ -134,8 +135,10 @@ class Light extends MapWorld{
     };
 
     drawRay(ray) {
+        // this.ctx3D.beginPath();
         this.ctx3D.lineWidth= 0.5;
         this.ctx3D.beginPath();
+        this.ctx3D.fillStyle = "red";
         this.ctx3D.moveTo(
             this.player.pos.x * MAP_SCALE * SCALE_FACTOR ,
             this.player.pos.y * MAP_SCALE * SCALE_FACTOR
