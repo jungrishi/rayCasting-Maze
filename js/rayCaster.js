@@ -1,6 +1,5 @@
-class Player extends MapWorld {
-    constructor(x, y, alpha, speed, moveSpeed, rotSpeed, context) {
-        super();
+class Player{
+    constructor(x, y, alpha, speed, moveSpeed, rotSpeed, context, map, color) {
         this.rayContext = context;
         this.pos = new Vector(x, y);
         this.dir = 0;
@@ -8,16 +7,18 @@ class Player extends MapWorld {
         this.speed = speed; 
         this.moveSpeed = moveSpeed;
         this.rotationSpeed = rotSpeed;
+        this.mapWorld  = map;
+        this.color = color;
     }
 
     draw() {
-        console.log('draw')
+        console.log('plyaer pos')
+        console.log(this.pos.x, this.pos.y);
         let x = this.pos.x  * MAP_SCALE * SCALE_FACTOR - 2;
         let y = this.pos.y  * MAP_SCALE * SCALE_FACTOR- 2;
-        let w = 4  ;
-        let h = 4  ;
-        console.log(x,y,w,h);
-        this.rayContext.fillStyle = 'black';
+        let w = 4 ;
+        let h = 4 ;
+        this.rayContext.fillStyle = this.color;
         this.rayContext.fillRect(x, y, w, h);
         this.rayContext.strokeStyle = 'rgba(255,0,0,0.3)';
         this.rayContext.beginPath();
@@ -45,6 +46,7 @@ class Player extends MapWorld {
 
             this.newX = this.pos.x + Math.cos(this.alpha) * this.moveStep;
             this.newY = this.pos.y + Math.sin(this.alpha) * this.moveStep;
+            debugger;
             if (this.isBlocking(this.newX, this.newY)) {
                 return;
             }
@@ -53,11 +55,11 @@ class Player extends MapWorld {
         }
 
     isBlocking(x,y) {
-        if (y < 1 || y > this.mapHeight - 1 || x < 1 || x > this.mapWidth - 1) {
+        if (y < 1 || y > this.mapWorld.mapHeight - 1 || x < 1 || x > this.mapWorld.mapWidth - 1) {
             return true;
         }
 
-        return (this.map[Math.floor(y)][Math.floor(x)] != 0);
+        return (this.mapWorld.map[Math.floor(y)][Math.floor(x)] != 0);
     }
 
     rotateLeft() {
