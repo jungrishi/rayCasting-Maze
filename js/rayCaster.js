@@ -29,7 +29,6 @@ class Player{
         );
         this.rayContext.closePath();
         this.rayContext.stroke();
-        // debugger;
     }
 
     move() {
@@ -46,13 +45,23 @@ class Player{
 
             this.newX = this.pos.x + Math.cos(this.alpha) * this.moveStep;
             this.newY = this.pos.y + Math.sin(this.alpha) * this.moveStep;
-            debugger;
             if (this.isBlocking(this.newX, this.newY)) {
                 return;
             }
             this.pos.x = this.newX;
             this.pos.y = this.newY;
         }
+
+    isFinish() {
+        let x = this.pos.x;
+        let y = this.pos.y;
+        let xWithInRange = inRange(x, POSITION.PLAYER_FINISH_POSX[0], POSITION.PLAYER_FINISH_POSX[2]);
+        let yWithInRange = inRange(y, POSITION.PLAYER_FINISH_POSY[0], POSITION.PLAYER_FINISH_POSY[1]);
+        if (xWithInRange && yWithInRange){
+            return true;
+        }        
+        return;
+    }    
 
     isBlocking(x,y) {
         if (y < 1 || y > this.mapWorld.mapHeight - 1 || x < 1 || x > this.mapWorld.mapWidth - 1) {

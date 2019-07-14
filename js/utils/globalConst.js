@@ -1,16 +1,17 @@
-const SCALE_FACTOR = 1;
+const SCALE_FACTOR = 0.3;
 const CANVAS_WIDTH = 600;
 const CANVAS_HEIGHT = 400;
 const MAP_SCALE = 8;
 const ROTATE_SPEED= 4;
 
+const EX_VALUE = 25;
 const FOV = degToRadian(60);
 const HALF_FOV = FOV / 2;
 const DOUBLEPI =( Math.PI * 2);
-const RAY_WIDTH = 2;
+const RAY_WIDTH = 1;
 const PROJECTION_PLANE_WIDTH = 320;
 const PROJECTION_PLANE_HEIGHT = 200;
-const VIEW_DIST = (PROJECTION_PLANE_WIDTH /2) * Math.tan(HALF_FOV);
+const VIEW_DIST = (PROJECTION_PLANE_WIDTH /2) / Math.tan(HALF_FOV);
 const NUM_RAYS = (PROJECTION_PLANE_WIDTH / RAY_WIDTH);
 const MAX_VISION_RANGE = 100;
 
@@ -26,6 +27,8 @@ const COLOR = {
 const POSITION = {
     PLAYER_START_POSX: 26,
     PLAYER_START_POSY: 1,
+    PLAYER_FINISH_POSX: [15,16,17],
+    PLAYER_FINISH_POSY:[22,23],
     START_ANGLE: 90,
     ENEMY_STARTING_POS: 26,
     ENEMY_STARTING_POSY: 22,
@@ -34,7 +37,7 @@ const POSITION = {
 
 const ATTRIBUTES = {
     PLAYER_ROTATE_SPEED_R: degToRadian(ROTATE_SPEED),
-    PLAYER_MOVE_SPEED: 0.14,
+    PLAYER_MOVE_SPEED: 0.04,
     PLAYER_SPEED: 0,
     ENEMY_SPEED: 1,
     ENEMY_MOVE_SPEED: 0,
@@ -63,8 +66,8 @@ const GAME_STATES_PLAYER = {
     PAUSE_GAME: KEY_BIND.PAUSE_KEY,
     QUIT_GAME:  KEY_BIND.QUIT_KEY
 }
-
-const PAUSE_TEXT = ["Game Paused \n Press 'Space Bar' To Resume or  'q' to Quit"];
+const WIN_TEXT = ["CONGRATS", "GAME WON"]
+const PAUSE_TEXT = ["Game Paused", "Press 'ENTER' To Resume"];
 const START_TEXT = ["WelCome! To The Game", "Press Enter to start the Game"];
 
 const LOAD_STATE =0;

@@ -9,21 +9,40 @@ class Light extends MapWorld{
         this.dist = 0;
         this.wall = new Vector();
         this.ctx3D = context;
+        this.rays = [];
+        for(let i=0;i<this.numRays;i++) {
+            this.rays.push((-this.numRays/2 + i) * this.pixelWidth);
+        }
+    }
+
+    drawRay(ray, dist) {
+        let opacity = 0.5/dist * 1;
+        this.ctx3D.strokeStyle = "rgba(255,255,255,"+ opacity +")";
+        this.ctx3D.lineWidth= 0.5;
+        this.ctx3D.beginPath();
+        this.ctx3D.moveTo(
+            this.player.pos.x * MAP_SCALE * SCALE_FACTOR ,
+            this.player.pos.y * MAP_SCALE * SCALE_FACTOR 
+        );
+        this.ctx3D.lineTo(
+            ray.x * MAP_SCALE * SCALE_FACTOR, 
+            ray.y * MAP_SCALE * SCALE_FACTOR 
+        );
+        this.ctx3D.closePath();
+        this.ctx3D.stroke();
     }
 
     castRay() {
         let stripID = 0;
-        let rayViewDist;
-
-        for(let i=0;i<this.numRays;i++) {
-            let rayPosition = (-this.numRays/2 + i) * this.pixelWidth;
-            rayViewDist = Math.sqrt(rayPosition  * rayPosition + this.perpdistance * this.perpdistance);
+        for (let ray in this.rays) {
+            let rayPosition = this.rays[ray];
+            let rayViewDist = Math.sqrt(rayPosition  * rayPosition + this.perpdistance * this.perpdistance);
             let rayAngle = Math.asin(rayPosition/rayViewDist);
             this.castSingleRay(
                 rayAngle + this.player.alpha, stripID++
             );
         }
-    }
+    }    
 
     castSingleRay(angle, stripID) {
         let sinThetaValue,cosThetaValue, anglePara;
@@ -67,7 +86,6 @@ class Light extends MapWorld{
         }
 
         //horizontal
-
         slope = cosThetaValue/sinThetaValue;
         dy  = isFacingUp? -1 : 1;
         dx = dy * slope;
@@ -95,36 +113,19 @@ class Light extends MapWorld{
             let angle = this.player.alpha - anglePara ; 
             let fishEyeRemoveD = dist * Math.cos(angle);
             this.renderStrip(stripID,fishEyeRemoveD, intensity);
-            this.drawRay(hit);
+            this.drawRay(hit, dist);
         }
     }
 
     renderStrip(stripID, dist, intensity) {
-        // console.log(distanceProjection);
-        let wallStripHeight = (MAP_SCALE / dist) * VIEW_DIST;
-        console.log(wallStripHeight);
-        let opacity = (0.7/dist) * 1;
+        dist = dist * MAP_SCALE;
+        console.log(dist);
+        let wallStripHeight = (MAP_SCALE * 2 / dist) * EX_VALUE; //experimental value
+        let opacity = (0.7/dist) * 6;
         let c1, c2, c3;
-        // if (dist > 3){
-        //     dist = dist/CANVAS_HEIGHT; 
-        //     if (dist >0 && dist<0.3) {
-        //         c1 = Math.random() * 256;
-        //         c2 = Math.random() * 256;
-        //         c3 = Math.random() * 256;
-        //     }
-
-        //     else {
-        //         c1 = 0;
-        //         c2 = 0;
-        //         c3 = 0;
-
-        //     }
-        // }        
-        // else {
-            c1 = 255;
+            c1 = 0;
             c2 = 0;
-            c3 = 0
-        // }
+            c3 = 0;
         this.ctx3D.fillStyle = "rgba("+c1+" ,"+c2+", "+c3+", "+ opacity +")";
         this.ctx3D.fillRect(
                             stripID * this.pixelWidth + this.mapWorldWidth,
@@ -133,20 +134,4 @@ class Light extends MapWorld{
                             wallStripHeight
                         );
     };
-
-    drawRay(ray) {
-        // this.ctx3D.beginPath();
-        this.ctx3D.lineWidth= 0.5;
-        this.ctx3D.beginPath();
-        this.ctx3D.fillStyle = "red";
-        this.ctx3D.moveTo(
-            this.player.pos.x * MAP_SCALE * SCALE_FACTOR ,
-            this.player.pos.y * MAP_SCALE * SCALE_FACTOR
-        );
-        this.ctx3D.lineTo(
-            ray.x * MAP_SCALE * SCALE_FACTOR, 
-            ray.y * MAP_SCALE * SCALE_FACTOR 
-        );
-        this.ctx3D.closePath();
-    }
 }
