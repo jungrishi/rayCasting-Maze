@@ -7,8 +7,6 @@ class GameWorld {
 
         this.isplaying = false;
         this.currentState = MENU_STATE;
-        this.checkPauseState = 0;
-        this.stateStack = [];
 
         this.left = false;
         this.up = false;
@@ -23,23 +21,8 @@ class GameWorld {
 
     pauseGame() {
         console.log(this.checkPauseState);
-        this.checkPauseState === 0 ? 1 : 0;
-        // debugger;
-        switch (this.checkPauseState) { //how??
-            // case 1:
-            //     this.ctx = this.stateStack.pop();
-            //     console.log(this.stateStack.pop());
-            //     debugger;
-            //     this.isplaying = true;
-            //     this.currentState = IS_PLAYING;
-            //     break;
-            case 0:
-                // this.stateStack.push(this.context);
-                this.gameMenu.draw();
-                break;
+        this.gameMenu.draw();
         } 
-
-    }
 
     startGameLoop() {
         this.mainLoopID = requestAnimationFrame(() => this.startGameLoop());
@@ -50,14 +33,10 @@ class GameWorld {
                 break;
             case START: 
                 this.mapWorld.drawMapWorld();
-                this.objects.draw();
-                // this.objects.move();
                 this.currentState = IS_PLAYING;
                 break;
             case IS_PLAYING:
                 this.mapWorld.drawMapWorld();
-                this.objects.draw();
-                // this.objects.move();
                 this.player.move();
                 this.player.draw();
                 this.particle.castRay();    
@@ -74,16 +53,18 @@ class GameWorld {
     }
 
     resetGameComponents() {
-        this.gameMenu = new GameMenu(this.ctx); //blunder
-
+        this.gameMenu = new GameMenu(this.ctx);
         this.mapWorld = new MapWorld(this.ctx); 
         this.player = new Player(
-                                    PLAYER_START_POSX, 
-                                    PLAYER_START_POSY,
-                                    START_ANGLE, SPEED, 
-                                    MOVE_SPEED, 
-                                    ROTATE_SPEED_R,
-                                    this.ctx
+                                    POSITION.PLAYER_START_POSX, 
+                                    POSITION.PLAYER_START_POSY,
+                                    POSITION.START_ANGLE,
+                                    ATTRIBUTES.PLAYER_SPEED, 
+                                    ATTRIBUTES.PLAYER_MOVE_SPEED, 
+                                    ATTRIBUTES.PLAYER_ROTATE_SPEED_R,
+                                    this.ctx,
+                                    this.mapWorld,
+                                    COLOR.PLAYER
                                     );
 
         this.particle = new Light(
@@ -94,11 +75,7 @@ class GameWorld {
                                     this.player,
                                     this.ctx);  
         
-                                    
-
-        this.objects = new Obstacles(10,5, this.ctx, 'red', 1, this.mapWorld);                                    
         this.currentState = MENU_STATE;    
-
         this.inputHandlerID1 = window.addEventListener("keydown", this.handleKeyDown.bind(this));
         this.inputHandlerID2 = window.addEventListener("keyup",  this.handleKeyUp.bind(this));       
     }
