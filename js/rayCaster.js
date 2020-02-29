@@ -12,8 +12,6 @@ class Player{
     }
 
     draw() {
-        console.log('plyaer pos')
-        console.log(this.pos.x, this.pos.y);
         let x = this.pos.x  * MAP_SCALE * SCALE_FACTOR - 2;
         let y = this.pos.y  * MAP_SCALE * SCALE_FACTOR- 2;
         let w = 4 ;
@@ -72,7 +70,6 @@ class Player{
     }
 
     rotateLeft() {
-        console.log('left');
         this.dir = -1;
         this.move();
     }

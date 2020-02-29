@@ -27,13 +27,11 @@ class GameWorld {
                 this.startGameWorld();
             }
             else {
-                console.log('loading');
             }
         });
     }
 
     pauseGame() {
-        console.log(this.checkPauseState);
         this.gameMenu.draw(PAUSE_TEXT[0], PAUSE_TEXT[1]);
         } 
 

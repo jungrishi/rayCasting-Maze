@@ -119,7 +119,6 @@ class Light extends MapWorld{
 
     renderStrip(stripID, dist, intensity) {
         dist = dist * MAP_SCALE;
-        console.log(dist);
         let wallStripHeight = (MAP_SCALE * 2 / dist) * EX_VALUE; //experimental value
         let opacity = (0.7/dist) * 6;
         let c1, c2, c3;

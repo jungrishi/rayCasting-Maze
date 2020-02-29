@@ -3,7 +3,6 @@ class MapWorld {
         this.mapContext = context;
         this.mapWidth = 0;
         this.mapHeight = 0;
-        console.log(this.mapContext);
     
         this.map = [
             [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,1,1,1],
